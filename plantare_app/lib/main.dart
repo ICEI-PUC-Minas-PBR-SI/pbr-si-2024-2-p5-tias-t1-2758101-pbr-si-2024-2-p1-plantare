@@ -19,10 +19,10 @@ class MyApp extends StatelessWidget {
           secondary: AppColors.accent,
         ),
         textTheme: TextTheme(
-          headline1: AppTextStyles.title,
-          subtitle1: AppTextStyles.subtitle,
-          bodyText1: AppTextStyles.body,
-          button: AppTextStyles.buttonText,
+          headlineLarge: AppTextStyles.title,
+          titleMedium: AppTextStyles.subtitle,
+          bodyLarge: AppTextStyles.body,
+          labelLarge: AppTextStyles.buttonText,
         ),
       ),
       // Definindo as rotas usando AppRoutes
