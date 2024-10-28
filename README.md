@@ -18,3 +18,18 @@ Plantare é aplicativo sustentável desenvolvido para automatizar processos agr�
 ### Protótipo 
 
 [Link do wireframe no figma](https://www.figma.com/design/XWoEAcVqHS0cNm98Vy9Khd/PLANTARE?node-id=0-1&t=wdCUbgtvtkE8AI60-1)
+
+
+## Links de possíveis bases de dados
+
+[Trefle](https://trefle.io/)
+
+[Openfarm](https://openfarm.cc/en)
+
+[Covercrop](https://sarep.ucdavis.edu/covercrop)
+
+[HortusFox](https://github.com/danielbrendel/hortusfox-web)
+
+[Farmassist](https://github.com/farmassistX/farmassist)
+
+[Kaggle](https://www.kaggle.com/datasets/idhytm/dataset-frutas-legumes-e-verduras-pt-br/data?select=db-verduras.txt)
