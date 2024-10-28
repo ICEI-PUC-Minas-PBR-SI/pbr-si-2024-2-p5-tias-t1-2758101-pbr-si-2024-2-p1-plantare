@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plantare_app/core/app_colors.dart';
 import 'package:plantare_app/core/app_text_styles.dart';
+import '../database/database_helper.dart'; // Importa o DatabaseHelper para o login
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -10,18 +11,36 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final DatabaseHelper _dbHelper = DatabaseHelper.instance; // Instância do DatabaseHelper
   String? errorMessage;
 
-  void _login() {
-    if (_emailController.text != "user@example.com" || _passwordController.text != "password123") {
+  // Função de login
+  Future<void> _login() async {
+    String email = _emailController.text;
+    String senha = _passwordController.text;
+
+    try {
+      // Usa a função login do DatabaseHelper para verificar as credenciais
+      var user = await _dbHelper.login(email, senha);
+
+      if (user != null) {
+        // Login bem-sucedido, navega para a tela principal
+        setState(() {
+          errorMessage = null;
+        });
+        Navigator.pushReplacementNamed(context, '/home');
+      } else {
+        // Exibe uma mensagem de erro
+        setState(() {
+          errorMessage = "E-mail ou senha incorretos.";
+        });
+      }
+    } catch (e) {
+      // Exibe uma mensagem de erro para exceções não esperadas
       setState(() {
-        errorMessage = "E-mail ou senha incorretos.";
+        errorMessage = "Erro ao conectar ao banco de dados.";
       });
-    } else {
-      setState(() {
-        errorMessage = null;
-      });
-      Navigator.pushNamed(context, '/home');
+      print("Erro de login: $e");
     }
   }
 
@@ -154,7 +173,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     minimumSize: Size(double.infinity, 48),
                   ),
-                  onPressed: _login,
+                  onPressed: _login, // Chama a função _login ao pressionar
                   child: Text(
                     'Acessar',
                     style: TextStyle(
