@@ -3,6 +3,72 @@ import 'package:plantare_app/core/app_colors.dart';
 import '../database/database_helper.dart';
 // database_helper.dart
 import 'database_helper_mobile.dart' if (dart.library.html) 'database_helper_web.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
+class FirestoreService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> getData() async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore.collection('usuarios').get();
+      for (var doc in querySnapshot.docs) {
+        print("Nome: ${doc['Nome']}");
+        print("Email: ${doc['Email']}");
+        print("Senha: ${doc['Senha']}");
+      }
+    } catch (e) {
+      print("Erro ao buscar dados: $e");
+    }
+  }
+
+   Future<void> registerUser(String nome, String email, String senha) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('usuarios')
+          .where('Email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        print("Este e-mail já está cadastrado.");
+      } else {
+        
+        DocumentReference lastIdRef = _firestore.collection('metadata').doc('lastUserId');
+        DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
+
+        int newUserId;
+        if (lastIdSnapshot.exists) {
+          newUserId = lastIdSnapshot['value'] + 1;
+          await lastIdRef.update({'value': newUserId});
+        } else {
+          newUserId = 1;
+          await lastIdRef.set({'value': newUserId});
+        }
+
+        await _firestore.collection('usuarios').doc(newUserId.toString()).set({
+          'Nome': nome,
+          'Email': email,
+          'Senha': senha,
+        });
+
+        print("Usuário cadastrado com sucesso! ID: $newUserId");
+      }
+    } catch (e) {
+      print("Erro ao cadastrar usuário: $e");
+    }
+  }
+}
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Firestore Example")),
+      body: Center(
+        child: Text("Verifique o console para os dados."),
+      ),
+    );
+  }
 
 typedef DatabaseHelper = DatabaseHelperImplementation;
 

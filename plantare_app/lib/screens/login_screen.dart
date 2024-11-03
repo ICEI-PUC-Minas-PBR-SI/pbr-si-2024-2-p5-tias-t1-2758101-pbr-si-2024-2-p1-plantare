@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plantare_app/core/app_colors.dart';
 import 'package:plantare_app/core/app_text_styles.dart';
-import '../database/database_helper.dart'; // Importa o DatabaseHelper para o login
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,38 +11,41 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final DatabaseHelper _dbHelper = DatabaseHelper.instance; // Instância do DatabaseHelper
   String? errorMessage;
 
   // Função de login
   Future<void> _login() async {
-    String email = _emailController.text;
-    String senha = _passwordController.text;
+  String email = _emailController.text;
+  String senha = _passwordController.text;
 
-    try {
-      // Usa a função login do DatabaseHelper para verificar as credenciais
-      var user = await _dbHelper.login(email, senha);
+  try {
+    // Consulta Firestore para verificar se há algum documento com o email e senha fornecidos
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('usuarios')
+        .where('Email', isEqualTo: email)
+        .where('Senha', isEqualTo: senha)
+        .get();
 
-      if (user != null) {
-        // Login bem-sucedido, navega para a tela principal
-        setState(() {
-          errorMessage = null;
-        });
-        Navigator.pushReplacementNamed(context, '/home');
-      } else {
-        // Exibe uma mensagem de erro
-        setState(() {
-          errorMessage = "E-mail ou senha incorretos.";
-        });
-      }
-    } catch (e) {
-      // Exibe uma mensagem de erro para exceções não esperadas
+    if (querySnapshot.docs.isNotEmpty) {
+      // Login bem-sucedido se houver um documento correspondente
       setState(() {
-        errorMessage = "Erro ao conectar ao banco de dados.";
+        errorMessage = null;
       });
-      print("Erro de login: $e");
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      // Exibe uma mensagem de erro caso nenhum documento corresponda
+      setState(() {
+        errorMessage = "E-mail ou senha incorretos.";
+      });
     }
+  } catch (e) {
+    // Exibe uma mensagem de erro para exceções não esperadas
+    setState(() {
+      errorMessage = "Erro ao conectar ao banco de dados.";
+    });
+    print("Erro de login: $e");
   }
+}
 
   @override
   Widget build(BuildContext context) {

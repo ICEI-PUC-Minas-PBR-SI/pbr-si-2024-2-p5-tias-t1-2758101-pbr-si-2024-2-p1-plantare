@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plantare_app/database/database_helper.dart';
 import '../core/app_colors.dart';
 import '../core/app_text_styles.dart';
 
@@ -8,6 +9,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final FirestoreService firestoreService = FirestoreService();
+
+  // Controladores de texto para capturar valores dos campos
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   bool isCheckboxChecked = false;
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
@@ -36,6 +44,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   @override
+  void dispose() {
+    // Libere os controladores quando a tela for descartada para evitar vazamentos de memória
+    nomeController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.highlight,
@@ -45,11 +62,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Título com fonte Oswald
             Text(
               'Crie sua conta',
               style: TextStyle(
-                fontFamily: 'Oswald', // Fonte Oswald
+                fontFamily: 'Oswald',
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
@@ -57,14 +73,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 24),
 
-            // Campo Nome com fonte Manrope
+            // Campo Nome com controlador
             TextField(
+              controller: nomeController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 hintText: 'Insira seu nome',
                 hintStyle: TextStyle(
-                  fontFamily: 'Manrope', // Fonte Manrope
+                  fontFamily: 'Manrope',
                   color: Color.fromARGB(255, 175, 171, 171),
                 ),
                 prefixIcon: Icon(Icons.person, color: Colors.black),
@@ -76,14 +93,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 16),
 
-            // Campo E-mail com fonte Manrope
+            // Campo E-mail com controlador
             TextField(
+              controller: emailController,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 hintText: 'Seu melhor e-mail',
                 hintStyle: TextStyle(
-                  fontFamily: 'Manrope', // Fonte Manrope
+                  fontFamily: 'Manrope',
                   color: Color.fromARGB(255, 176, 171, 171),
                 ),
                 prefixIcon: Icon(Icons.email, color: Colors.black),
@@ -95,8 +113,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 16),
 
-            // Campo Senha com fonte Manrope
+            // Campo Senha com controlador
             TextField(
+              controller: passwordController,
               obscureText: !isPasswordVisible,
               onChanged: _validatePassword,
               decoration: InputDecoration(
@@ -127,7 +146,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 16),
 
-            // Campo Confirmar Senha com fonte Manrope
+            // Campo Confirmar Senha
             TextField(
               obscureText: !isConfirmPasswordVisible,
               onChanged: _validateConfirmPassword,
@@ -171,7 +190,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             SizedBox(height: 16),
 
-            // Requisitos de senha com fonte Manrope
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -182,12 +200,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 16),
 
-            // Termo de compromisso com fonte Manrope
             Row(
               children: [
                 Theme(
                   data: ThemeData(
-                    unselectedWidgetColor: Colors.black, // Cor do contorno
+                    unselectedWidgetColor: Colors.black,
                   ),
                   child: Checkbox(
                     value: isCheckboxChecked,
@@ -197,7 +214,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       });
                     },
                     checkColor: Colors.black,
-                    fillColor: MaterialStateProperty.all(Colors.white), // Fundo branco da caixa
+                    fillColor: MaterialStateProperty.all(Colors.white),
                   ),
                 ),
                 Expanded(
@@ -214,16 +231,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             SizedBox(height: 24),
 
-            // Botão "Crie sua conta" com fonte Manrope
+            // Botão "Crie sua conta"
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 60.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.yellow, // Fundo amarelo clarinho
+                  backgroundColor: Colors.yellow,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32),
                   ),
-                  minimumSize: Size(double.infinity, 48), // Largura total e altura consistente
+                  minimumSize: Size(double.infinity, 48),
                 ),
                 onPressed: () {
                   if (isCheckboxChecked &&
@@ -231,6 +248,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       isPasswordValidLength &&
                       isPasswordValidNumber &&
                       isPasswordValidSpecial) {
+                    // Acessa os valores dos campos usando os controladores
+                    String nome = nomeController.text;
+                    String email = emailController.text;
+                    String senha = passwordController.text;
+
+                    firestoreService.registerUser(nome, email, senha);
                     Navigator.pushNamed(context, '/home');
                   }
                 },
@@ -250,7 +273,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Requisitos de senha com fonte Manrope
   Widget _buildRequirementItem(String text, bool met) {
     return Row(
       children: [

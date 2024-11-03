@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "468361004286",
+    "project_id": "plantare-app",
+    "storage_bucket": "plantare-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468361004286:android:a06b7a1932d5ae03b0d1af",
+        "android_client_info": {
+          "package_name": "com.example.plantare_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3LBuk7MdJzsJ3tYynnYkNEdCaxDqKWAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
