@@ -34,7 +34,7 @@ Plantare é aplicativo sustentável desenvolvido para automatizar processos agr�
 
 [Kaggle](https://www.kaggle.com/datasets/idhytm/dataset-frutas-legumes-e-verduras-pt-br/data?select=db-verduras.txt)
 
-## Links de referência para o banco de dados( frutas, verduras e legumes)
+## Links de referência para o banco de dados(frutas, verduras e legumes)
 
 [Hortas.info](https://hortas.info/)
 [RevistaJardins](https://revistajardins.pt/plantas/horticolas/)
