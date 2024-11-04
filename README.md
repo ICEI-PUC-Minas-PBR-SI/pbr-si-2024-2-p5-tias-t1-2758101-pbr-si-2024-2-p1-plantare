@@ -33,3 +33,15 @@ Plantare é aplicativo sustentável desenvolvido para automatizar processos agr�
 [Farmassist](https://github.com/farmassistX/farmassist)
 
 [Kaggle](https://www.kaggle.com/datasets/idhytm/dataset-frutas-legumes-e-verduras-pt-br/data?select=db-verduras.txt)
+
+## Links de referência para o banco de dados( frutas, verduras e legumes)
+
+[Hortas.info](https://hortas.info/)
+[RevistaJardins](https://revistajardins.pt/plantas/horticolas/)
+[GloboRural](https://globorural.globo.com/)
+[CanalRural](https://www.canalrural.com.br/agricultura/hortifruti)
+[Embrapa](https://www.embrapa.br/)
+[BlogPlantei](https://blog.plantei.com.br/como-plantar-abacate/)
+[GaleriaRural](https://galeriarural.com.br/)
+[AgronoBlog](https://agronoblog.com/agricultura-pt)
+[PortalAgriconline](https://agriconline.com.br/portal/)
