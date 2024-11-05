@@ -23,6 +23,19 @@ class FirestoreService {
     }
   }
 
+  Future<List<String>> getVerduras() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('verduras').get();
+      List<String> verduras = snapshot.docs
+          .map((doc) => doc['nome'] as String)
+          .toList();
+      return verduras;
+    } catch (e) {
+      print("Erro ao buscar verduras: $e");
+      return [];
+    }
+  }
+
    Future<void> registerUser(String nome, String email, String senha) async {
     try {
       QuerySnapshot querySnapshot = await _firestore

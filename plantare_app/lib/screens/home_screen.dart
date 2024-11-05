@@ -78,7 +78,7 @@ class HomeScreen extends StatelessWidget {
               'Comunidade',
               'Compartilhe e aprenda',
               'assets/images/community_icon.png',
-              '/community', // Navegação para a página de comunidade
+              '/comment', // Navegação para a página de comunidade
             ),
           ],
         ),

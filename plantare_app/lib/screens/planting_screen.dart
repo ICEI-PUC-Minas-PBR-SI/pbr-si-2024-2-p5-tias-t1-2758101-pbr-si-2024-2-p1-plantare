@@ -1,8 +1,33 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import '../core/app_text_styles.dart'; // Certifique-se de que o estilo de fonte de títulos esteja aqui
 import '../core/app_colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plantare_app/database/database_helper.dart';
 
-class PlantingScreen extends StatelessWidget {
+class PlantingScreen extends StatefulWidget {
+  @override
+  _PlantingScreenState createState() => _PlantingScreenState();
+}
+
+class _PlantingScreenState extends State<PlantingScreen> {
+  List<String> verduras = [];
+  String? selectedVerdura; // Para armazenar a verdura selecionada
+
+  final FirestoreService firestoreService = FirestoreService();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchVerduras(); // Chama o método para buscar as verduras
+  }
+
+  void fetchVerduras() async {
+    List<String> fetchedVerduras = await firestoreService.getVerduras();
+    setState(() {
+      verduras = fetchedVerduras; // Atualiza o estado com as verduras obtidas
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,9 +94,27 @@ class PlantingScreen extends StatelessWidget {
             SizedBox(height: 16),
 
             // Campo para Nome da Semente/Planta com fundo preto e texto branco
-            TextField(
+            DropdownButtonFormField<String>(
+              value: selectedVerdura,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedVerdura = newValue; // Atualiza a verdura selecionada
+                });
+              },
+              items: verduras.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              }).toList(),
               decoration: InputDecoration(
-                labelText: 'Nome da semente/planta',
+                labelText: 'Selecione uma verdura',
                 labelStyle: TextStyle(
                   fontFamily: 'Manrope',
                   fontSize: 16,
@@ -84,7 +127,14 @@ class PlantingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
+                hintText: 'Dica: Escolha uma verdura para plantar',
+                hintStyle: TextStyle(
+                  fontFamily: 'Manrope',
+                  color: Colors.grey,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
+              dropdownColor: Color(0xFF180F0F),
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 16),
