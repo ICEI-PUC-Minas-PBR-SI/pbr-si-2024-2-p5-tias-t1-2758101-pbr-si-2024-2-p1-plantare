@@ -17,7 +17,7 @@ Plantare é aplicativo sustentável desenvolvido para automatizar processos agr�
 
 ### Protótipo 
 
-[Link do wireframe no figma](https://www.figma.com/design/XWoEAcVqHS0cNm98Vy9Khd/PLANTARE?node-id=0-1&t=wdCUbgtvtkE8AI60-1)
+[Link do wireframe no figma](https://www.figma.com/design/XWoEAcVqHS0cNm98Vy9Khd/PLANTARE?node-id=0-1&t=5tXYSJoJnnZqS4p9-1)
 
 
 ## Links de possíveis bases de dados
