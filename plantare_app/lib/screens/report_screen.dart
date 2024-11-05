@@ -39,14 +39,6 @@ class ReportScreen extends StatelessWidget {
                   color: Colors.black,
                 ),
                 children: [
-                  TextSpan(text: 'Olá, '),
-                  TextSpan(
-                    text: 'Abner ',
-                    style: TextStyle(color: Color(0xFF225149)),
-                  ),
-                  WidgetSpan(
-                    child: Icon(Icons.waving_hand, color: Color(0xFFF65600), size: 24),
-                  ),
                 ],
               ),
             ),

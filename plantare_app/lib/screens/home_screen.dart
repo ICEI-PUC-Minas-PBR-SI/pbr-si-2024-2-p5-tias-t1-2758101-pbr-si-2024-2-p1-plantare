@@ -20,14 +20,7 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             children: [
-              TextSpan(text: 'Olá, '),
-              TextSpan(
-                text: 'Abner',
-                style: TextStyle(
-                  color: Color(0xFF225149), // Verde específico para "Abner"
-                ),
-              ),
-              TextSpan(text: ' ! Vamos cultivar juntos ?'),
+              TextSpan(text: 'Olá, Vamos cultivar juntos ? '),
             ],
           ),
         ),
