@@ -13,7 +13,7 @@ Plantare é aplicativo sustentável desenvolvido para automatizar processos agr�
 
 ## Professor responsável 
 
-* Cleia Amaral
+* Cleia Marcia Gomes Amaral
 
 ### Protótipo 
 
