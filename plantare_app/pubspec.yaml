@@ -16,6 +16,8 @@ dependencies:
   cupertino_icons: ^1.0.6
   sqflite: ^2.4.0
   path: ^1.8.3
+  google_fonts: ^4.0.3
+
 
 dev_dependencies:
   cloud_firestore: ^4.17.5
@@ -23,6 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  
 
 flutter:
   uses-material-design: true
@@ -38,11 +41,17 @@ flutter:
     - assets/images/planting_bag.png
     - assets/images/watering_icon.png
     - assets/images/metrics_icon.png
+    - assets/images/logo.png
 
   fonts:
-    - family: Oswald
+    - family: Outfit
       fonts:
-        - asset: assets/fonts/Oswald-VariableFont_wght.ttf
-    - family: Manrope
-      fonts:
-        - asset: assets/fonts/Manrope-VariableFont_wght.ttf
+        - asset: assets/fonts/Outfit-Black.ttf
+        - asset: assets/fonts/Outfit-Bold.ttf
+        - asset: assets/fonts/Outfit-ExtraBold.ttf
+        - asset: assets/fonts/Outfit-ExtraLight.ttf
+        - asset: assets/fonts/Outfit-Light.ttf
+        - asset: assets/fonts/Outfit-Medium.ttf
+        - asset: assets/fonts/Outfit-Regular.ttf
+        - asset: assets/fonts/Outfit-SemiBold.ttf
+        - asset: assets/fonts/Outfit-Thin.ttf

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plantare_app/core/app_colors.dart';
-import 'package:plantare_app/core/app_text_styles.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -11,217 +10,331 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  String? errorMessage;
+  bool _isHovering = false; 
+  bool _rememberPassword = false;
+  bool _obscurePassword = true; // Controle de visibilidade da senha
 
   // Função de login
   Future<void> _login() async {
-  String email = _emailController.text;
-  String senha = _passwordController.text;
+    String email = _emailController.text.trim();
+    String senha = _passwordController.text.trim();
 
-  try {
-    // Consulta Firestore para verificar se há algum documento com o email e senha fornecidos
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('usuarios')
-        .where('Email', isEqualTo: email)
-        .where('Senha', isEqualTo: senha)
-        .get();
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('usuarios')
+          .where('Email', isEqualTo: email)
+          .where('Senha', isEqualTo: senha)
+          .get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      // Login bem-sucedido se houver um documento correspondente
-      setState(() {
-        errorMessage = null;
-      });
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      // Exibe uma mensagem de erro caso nenhum documento corresponda
-      setState(() {
-        errorMessage = "E-mail ou senha incorretos.";
-      });
+      if (querySnapshot.docs.isNotEmpty) {
+        // Login bem-sucedido
+        Navigator.pushReplacementNamed(context, '/home'); // Navega para a tela principal
+      } else {
+        // Exibe popup de erro
+        _showErrorDialog("E-mail ou senha incorretos.");
+      }
+    } catch (e) {
+      // Exibe popup de erro para problemas de conexão
+      _showErrorDialog("Erro ao conectar ao servidor.");
+      print("Erro: $e");
     }
-  } catch (e) {
-    // Exibe uma mensagem de erro para exceções não esperadas
-    setState(() {
-      errorMessage = "Erro ao conectar ao banco de dados.";
-    });
-    print("Erro de login: $e");
   }
-}
+
+  // Exibe um diálogo de erro
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Erro de Login",
+            style: GoogleFonts.outfit(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            message,
+            style: GoogleFonts.outfit(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Fecha o diálogo
+              },
+              child: Text(
+                "OK",
+                style: GoogleFonts.outfit(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.highlight,
       body: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 10),
-              // Título com fonte Oswald
-              Text(
-                'Bem-vindo ao',
-                style: TextStyle(
-                  fontFamily: 'Oswald', // Fonte Oswald
-                  fontSize: 40,
-                  fontWeight: FontWeight.w900,
-                  color: Colors.black,
-                ),
+        child: SizedBox(
+          width: 390,
+          height: 844,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 25.0),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF04BB86),
+                  Color(0xFF225149),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              Text(
-                'plantare',
-                style: TextStyle(
-                  fontFamily: 'Oswald', // Fonte Oswald
-                  fontSize: 40,
-                  fontWeight: FontWeight.w900,
-                  color: Color(0xFF5D2B20), // Cor CA6A52
-                ),
-              ),
-              SizedBox(height: 40),
-
-              // Campo de E-mail com fonte Manrope
-              Text(
-                'Entre com seu e-mail',
-                style: TextStyle(
-                  fontFamily: 'Manrope', // Fonte Manrope
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.email, color: Colors.black),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              SizedBox(height: 16),
-
-              // Campo de Senha com fonte Manrope
-              Text(
-                'Entre com sua senha',
-                style: TextStyle(
-                  fontFamily: 'Manrope', // Fonte Manrope
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  prefixIcon: Icon(Icons.lock, color: Colors.black),
-                  suffixIcon: Icon(Icons.visibility, color: Colors.black),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                ),
-              ),
-              SizedBox(height: 8),
-
-              // Exibição da mensagem de erro, se houver
-              if (errorMessage != null) ...[
-                SizedBox(height: 8),
-                Text(
-                  errorMessage!,
-                  style: TextStyle(
-                    fontFamily: 'Manrope', // Fonte Manrope
-                    color: Colors.red,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-
-              // Link "Esqueci minha senha" com fonte Manrope
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {
-                    // Ação para "Esqueci minha senha"
-                  },
-                  child: Text(
-                    'Esqueci minha senha',
-                    style: TextStyle(
-                      fontFamily: 'Manrope', // Fonte Manrope
-                      color: Color(0xFF5D2B20), // Cor CA6A52
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 30),
+                  Center(
+                    child: Image.asset(
+                      'assets/images/logo.png',
+                      width: 250,
+                      height: 200,
                     ),
                   ),
-                ),
-              ),
-              SizedBox(height: 24),
-
-              // Botão "Acessar" com fonte Manrope
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow, // Fundo amarelo clarinho
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    minimumSize: Size(double.infinity, 48),
-                  ),
-                  onPressed: _login, // Chama a função _login ao pressionar
-                  child: Text(
-                    'Acessar',
-                    style: TextStyle(
-                      fontFamily: 'Manrope', // Fonte Manrope
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.textDark,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 80),
-
-              // Link de "Não tem uma conta? Cadastre-se" com fonte Manrope
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Não tem uma conta?',
-                      style: TextStyle(
-                        fontFamily: 'Manrope', // Fonte Manrope
-                        fontSize: 14,
+                  SizedBox(height: 16),
+                  Center(
+                    child: Text(
+                      "Bem-vindo",
+                      style: GoogleFonts.outfit(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w600,
                         color: Colors.black,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/register');
-                      },
+                  ),
+                  SizedBox(height: 8),
+                  Center(
+                    child: Text(
+                      "Por favor insira seus dados",
+                      style: GoogleFonts.outfit(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 24),
+                  SizedBox(
+                    width: 305,
+                    height: 40,
+                    child: TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        hintText: "E-mail",
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintStyle: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                      style: GoogleFonts.outfit(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: 305,
+                    height: 40,
+                    child: TextField(
+                      controller: _passwordController,
+                      obscureText: _obscurePassword,
+                      decoration: InputDecoration(
+                        hintText: "Senha",
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintStyle: GoogleFonts.outfit(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      style: GoogleFonts.outfit(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _rememberPassword = !_rememberPassword;
+                                });
+                              },
+                              child: Container(
+                                width: 16,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _rememberPassword ? Colors.black : Colors.white,
+                                ),
+                                child: _rememberPassword
+                                    ? Icon(
+                                        Icons.check,
+                                        color: Colors.white,
+                                        size: 10,
+                                      )
+                                    : null,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Text(
+                              "Lembrar minha senha",
+                              style: GoogleFonts.outfit(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        MouseRegion(
+                          onEnter: (_) {
+                            setState(() {
+                              _isHovering = true; // Ativa o hover
+                            });
+                          },
+                          onExit: (_) {
+                            setState(() {
+                              _isHovering = false; // Desativa o hover
+                            });
+                          },
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/forgotpassword'); // Redireciona para a tela de "Esqueceu sua senha"
+                            },
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: _isHovering ? 10.0 : 10.0, // Padding ajustado no hover
+                                vertical: _isHovering ? 5.0 : 5.0,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                SizedBox(width: 5),
+                                Text(
+                                  "Esqueceu sua senha?",
+                                  style: GoogleFonts.outfit(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  SizedBox(
+                    width: 305,
+                    height: 40,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      onPressed: _login,
                       child: Text(
-                        'Cadastre-se',
-                        style: TextStyle(
-                          fontFamily: 'Manrope', // Fonte Manrope
-                          color: Color(0xFF5D2B20), // Cor CA6A52
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
+                        "Entrar",
+                        style: GoogleFonts.outfit(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 220),
+
+                  // Texto "Não tem uma conta?"
+                  Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/register'); // Redireciona para a tela de cadastro
+                          },
+                          child: Text(
+                            "Não tem uma conta ? Cadastre-se",
+                            style: GoogleFonts.outfit(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),

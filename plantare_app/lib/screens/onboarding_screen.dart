@@ -1,111 +1,136 @@
 import 'package:flutter/material.dart';
-import '../core/app_colors.dart';
-import '../core/app_text_styles.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.highlight,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Título e subtítulo
-            Column(
+        child: SizedBox(
+          width: 390, // Largura fixa do layout
+          height: 844, // Altura fixa do layout
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0), // Ajuste de padding interno
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF04BB86), // Cor inicial do degradê
+                  Color(0xFF225149), // Cor final do degradê
+                ],
+                begin: Alignment.topCenter, // Degradê começa no topo
+                end: Alignment.bottomCenter, // Degradê termina na parte inferior
+              ),
+              borderRadius: BorderRadius.circular(50), // Arredondamento nas bordas
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Espaçamento entre os elementos principais
               children: [
-                Text(
-                  'PLANTARE',
-                  style: TextStyle(
-                    fontFamily: 'Oswald', // Fonte Oswald para o título
-                    fontSize: 60,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1,
-                    color: Colors.black,
+                // Espaço entre o topo e os textos
+                Padding(
+                  padding: EdgeInsets.only(top: 30.0), // Espaçamento interno no topo
+                  child: Column(
+                    children: [
+                      // Título com fonte Outfit
+                      Text(
+                        'PLANTARE',
+                        style: GoogleFonts.outfit(
+                          fontSize: 64, // Ajuste do tamanho
+                          fontWeight: FontWeight.w600, // Peso da fonte
+                          letterSpacing: 1,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 0), // Espaçamento entre título e subtítulo
+                      // Subtítulo com fonte Outfit
+                      Text(
+                        'Cultive suas ideias',
+                        style: GoogleFonts.outfit(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(height: 4), // Ajuste de espaçamento entre título e subtítulo
-                Text(
-                  'Cultive suas ideias',
-                  style: TextStyle(
-                    fontFamily: 'Manrope', // Fonte Manrope para o subtítulo
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700, // Negrito para o subtítulo
-                    color: Colors.black,
+                SizedBox(height: 15), // Espaçamento entre texto e imagem
+                // Imagem com tamanho ajustado
+                SizedBox(
+                  width: 450, // Largura ajustada
+                  height: 350, // Altura ajustada
+                  child: Image.asset(
+                    'assets/images/onboarding_image.png',
+                    fit: BoxFit.contain, // Mantém a proporção da imagem
+                  ),
+                ),
+                Column(
+                  children: [
+                    // Botão "Entrar" com fonte Outfit
+                    SizedBox(
+                      width: 240, // Largura fixa
+                      height: 40, // Altura fixa
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50), // Arredondamento no botão
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/login');
+                        },
+                        child: Text(
+                          'Entrar',
+                          style: GoogleFonts.outfit(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20), // Espaçamento entre os botões
+                    // Botão "Cadastre-se" com fonte Outfit
+                    SizedBox(
+                      width: 240, // Largura fixa
+                      height: 40, // Altura fixa
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50), // Arredondamento no botão
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/register');
+                        },
+                        child: Text(
+                          'Cadastre-se',
+                          style: GoogleFonts.outfit(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20), // Espaçamento entre botões e rodapé
+                // Versão no rodapé com fonte Outfit
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    'Versão 2.0',
+                    style: GoogleFonts.outfit(
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 24), // Espaçamento entre texto e imagem
-            // Imagem de ilustração
-            Image.asset(
-              'assets/images/onboarding_image.png',
-              height: 380, // Ajuste de altura da imagem para balancear o layout
-            ),
-            SizedBox(height: 40), // Espaçamento entre imagem e botões
-            // Botão "Entrar"
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32),
-                  ),
-                  minimumSize: Size(double.infinity, 48),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: Text(
-                  'Entrar',
-                  style: TextStyle(
-                    fontFamily: 'Manrope', // Fonte Manrope para o botão
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 8), // Espaçamento entre os botões
-            // Botão "Cadastre-se"
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60.0),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32),
-                  ),
-                  minimumSize: Size(double.infinity, 48),
-                ),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/register');
-                },
-                child: Text(
-                  'Cadastre-se',
-                  style: TextStyle(
-                    fontFamily: 'Manrope', // Fonte Manrope para o botão
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: 32), // Espaçamento antes da versão
-            // Texto "Versão 1.0"
-            Text(
-              'Versão 1.0',
-              style: TextStyle(
-                fontFamily: 'Manrope', // Fonte Manrope para o texto da versão
-                fontSize: 12,
-                color: AppColors.textDark,
-              ),
-            ),
-            SizedBox(height: 16), // Espaçamento final para centralizar na tela
-          ],
+          ),
         ),
       ),
     );
