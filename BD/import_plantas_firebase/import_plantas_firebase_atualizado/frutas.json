@@ -1,0 +1,439 @@
+
+{
+    "frutas": [
+    {
+          "nome": "Abacate",
+          "solo_ideal": "Rico em matéria orgânica, bem drenado",
+          "clima": "Ensolarado, tolera meia-sombra",
+          "regagem": "2-3 vezes por semana",
+          "quantidade_agua_ml": "750 ml", 
+          "tempo_colheita": "12-18 meses",
+          "época_plantio_ideal": "Primavera",
+          "distancia_entre_plantas": "5-6 metros",
+          "profundidade_plantio": "1 metro",
+          "pragas_e_doencas_principais": ["Vaquinha", "Cochonilha", " Broca"],
+          "solucoes": {
+              "Vaquinha": "Inseticida específico, controle biológico com joaninhas",
+              "Cochonilha": "Óleo de neem, remoção manual",
+              "Broca": "Poda de partes afetadas, inseticida sistêmico"
+          }
+    },
+    {
+		"nome": "Abacaxi",
+		"solo_ideal": "Areno-argiloso, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Diária",
+		"quantidade_agua_ml": "1000 ml", 
+		"tempo_colheita": "12-18 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "1-1,5 metros",
+		"profundidade_plantio": "30-40 cm",
+		"pragas_e_doencas_principais": ["Broca do abacaxi", "Cochonilha"],
+		"solucoes": {
+			"Broca do abacaxi": "Controle biológico com nematoides, capturas em armadilhas",
+			"Cochonilha": "Óleo de neem, controle biológico com inimigos naturais"
+		}
+	},
+	{
+		"nome": "Acerola",
+		"solo_ideal": "Ácido, rico em matéria orgânica",
+		"clima": "Ensolarado",
+		"regagem": "Diária",
+		"quantidade_agua_ml": "500 ml", 
+		"tempo_colheita": "6-8 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "1-2 metros",
+		"profundidade_plantio": "30-40 cm",
+		"pragas_e_doencas_principais": ["Mosca-branca", "Ferrugem"],
+		"solucoes": {
+			"Mosca-branca": "Armadilhas adesivas amarelas, controle biológico com vespas parasitoides",
+			"Ferrugem": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Ameixa",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "A cada 2-3 dias",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "1 ano",
+		"época_plantio_ideal": "Outono e inverno",
+		"distancia_entre_plantas": "3-4 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Oídio"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Oídio": "Fungicidas à base de enxofre, controle cultural"
+		}
+	},
+    {
+		"nome": "Ameixa",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "A cada 2-3 dias",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "1 ano",
+		"época_plantio_ideal": "Outono e inverno",
+		"distancia_entre_plantas": "3-4 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Oídio", "Monilínise"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Oídio": "Fungicidas à base de enxofre, controle cultural",
+			"Monilínise": "Poda de partes afetadas, fungicidas à base de cobre"
+		}
+	},
+	{
+		"nome": "Amora",
+		"solo_ideal": "Rico em matéria orgânica, úmido",
+		"clima": "Sol parcial",
+		"regagem": "Diária",
+		"quantidade_agua_ml": "500 ml", 
+		"tempo_colheita": "1 ano",
+		"época_plantio_ideal": "Outono e inverno",
+		"distancia_entre_plantas": "1-1,5 metros",
+		"profundidade_plantio": "30-40 cm",
+		"pragas_e_doencas_principais": ["Ácaro vermelho", "Broca", "Podridão", "Antracnose"],
+		"solucoes": {
+			"Ácaro vermelho": "Acaricidas, controle biológico com ácaros predadores",
+			"Broca": "Poda de partes afetadas, inseticidas específicos",
+			"Podridão": "Controle cultural, fungicidas",
+			"Antracnose": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Banana",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Diária",
+		"quantidade_agua_ml": "1000 ml", 
+		"tempo_colheita": "9-12 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "30-40 cm",
+		"pragas_e_doencas_principais": ["Sigatoka negra", "Mal do Panamá", "Tripes"],
+		"solucoes": {
+			"Sigatoka negra": "Fungicidas específicos, controle cultural",
+			"Mal do Panamá": "Rotação de culturas, controle biológico",
+			"Tripes": "Inseticidas específicos, controle biológico"
+		}
+	},
+	{
+		"nome": "Caju",
+		"solo_ideal": "Areno-argiloso, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "800 ml", 
+		"tempo_colheita": "12-18 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "5-7 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Broca do caule", "Antracnose", "Podridão de frutos"],
+		"solucoes": {
+			"Broca do caule": "Poda de partes afetadas, inseticidas específicos",
+			"Antracnose": "Fungicidas à base de cobre, controle cultural",
+			"Podridão de frutos": "Controle cultural, coleta e destruição de frutos doentes"
+		}
+	},
+    {
+		"nome": "Carambola",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "10-12 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "3-4 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Mosca-branca", "Antracnose"],
+		"solucoes": {
+			"Mosca-branca": "Armadilhas adesivas amarelas, controle biológico com vespas parasitoides",
+			"Antracnose": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Coco",
+		"solo_ideal": "Areno-arenoso, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "1200 ml", 
+		"tempo_colheita": "6-12 meses (depende da variedade)",
+		"época_plantio_ideal": "Durante todo o ano em regiões quentes e úmidas",
+		"distancia_entre_plantas": "6-8 metros",
+		"profundidade_plantio": "60-80 cm",
+		"pragas_e_doencas_principais": ["Broca do coqueiro", "Besouro-castanho"],
+		"solucoes": {
+			"Broca do coqueiro": "Remoção de palmeiras doentes, controle químico",
+			"Besouro-castanho": "Armadilhas luminosas, controle químico"
+		}
+	},
+	{
+		"nome": "Goiaba",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "6-12 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "40-50 cm",
+		"pragas_e_doencas_principais": ["Mosca-das-frutas", "Ferrugem"],
+		"solucoes": {
+			"Mosca-das-frutas": "Iscas atrativas, controle biológico com parasitoides",
+			"Ferrugem": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Jabuticaba",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado, tolera sombra parcial",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "750 ml", 
+		"tempo_colheita": "2-3 anos",
+		"época_plantio_ideal": "Outono e inverno",
+		"distancia_entre_plantas": "3-4 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Cochonilha, Antracnose"],
+		"solucoes": {
+			"Cochonilha": "Óleo de neem, controle biológico com inimigos naturais",
+			"Antracnose": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Laranja",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "800 ml", 
+		"tempo_colheita": "8-10 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "3-4 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Cochonilha", "Hérnia da raiz"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Cochonilha": "Óleo de neem, controle biológico com inimigos naturais",
+			"Hérnia da raiz": "Rotação de culturas, controle químico"
+		}
+	},
+	{
+		"nome": "Limão",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "650 ml", 
+		"tempo_colheita": "10-12 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "40-50 cm",
+		"pragas_e_doencas_principais": ["Minador de folhas", "Cancro cítrico"],
+		"solucoes": {
+			"Minador de folhas": "Controle biológico com parasitoides, inseticidas específicos",
+			"Cancro cítrico": "Poda de partes afetadas, controle químico"
+		}
+	},
+	{
+		"nome": "Maçã",
+		"solo_ideal": "Rico em matéria orgânica, profundo",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "1 ano ou mais",
+		"época_plantio_ideal": "Outono",
+		"distancia_entre_plantas": "4-5 metros",
+		"profundidade_plantio": "60-70 cm",
+		"pragas_e_doencas_principais": ["Caruncho da maçã", "Monilínise", "Ferrugem"],
+		"solucoes": {
+			"Caruncho da maçã": "Armadilhas, controle biológico",
+			"Monilínise": "Poda de partes afetadas, fungicidas",
+			"Ferrugem": "Fungicidas à base de enxofre, controle cultural"
+		}
+	},
+	{
+		"nome": "Mamão",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado, quente e úmido",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "1000 ml", 
+		"tempo_colheita": "8-10 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "30-40 cm",
+		"pragas_e_doencas_principais": ["Sigatoka negra", "Mal do Panamá"],
+		"solucoes": {
+			"Sigatoka negra": "Fungicidas específicos, controle cultural",
+			"Mal do Panamá": "Rotação de culturas, controle biológico"
+		}
+	},
+	{
+		"nome": "Manga",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado, quente e úmido",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "800 ml", 
+		"tempo_colheita": "10-12 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "5-6 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Broca-da-manga", "Mosca-das-frutas", "Antracnose"],
+		"solucoes": {
+			"Broca-da-manga": "Controle biológico com nematoides, armadilhas",
+			"Mosca-das-frutas": "Iscas atrativas, controle biológico com parasitoides",
+			"Antracnose": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Maracujá",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "500 ml", 
+		"tempo_colheita": "8-10 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "30-40 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Mosca-branca", "Podridão de frutos"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Mosca-branca": "Armadilhas adesivas amarelas, controle biológico com vespas parasitoides",
+			"Podridão de frutos": "Controle cultural, coleta e destruição de frutos doentes"
+		}
+	},
+	{
+		"nome": "Melancia",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado, quente",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "1200 ml", 
+		"tempo_colheita": "3-4 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "1-1,5 metros",
+		"profundidade_plantio": "3-4 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Oídio", "Podridão de frutos"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Oídio": "Fungicidas à base de enxofre, controle cultural",
+			"Podridão de frutos": "Controle cultural, coleta e destruição de frutos doentes"
+		}
+	},
+	{
+		"nome": "Melão",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado, quente",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "1200 ml", 
+		"tempo_colheita": "3-4 meses",
+		"época_plantio_ideal": "Primavera e verão",
+		"distancia_entre_plantas": "1-1,5 metros",
+		"profundidade_plantio": "3-4 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Mosca-branca", "Podridão de frutos"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Mosca-branca": "Armadilhas adesivas amarelas, controle biológico com vespas parasitoides",
+			"Podridão de frutos": "Controle cultural, coleta e destruição de frutos doentes"
+		}
+	},
+	{
+		"nome": "Morango",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "3-4 meses após o plantio",
+		"época_plantio_ideal": "Outono ou início da primavera",
+		"distancia_entre_plantas": "30-40 cm",
+		"profundidade_plantio": "5-10 cm",
+		"pragas_e_doencas_principais": ["Caramujo", "Ácaro vermelho", "Podridão cinzenta"],
+		"solucoes": {
+			"Caramujo": "Iscas, barreiras físicas",
+			"Ácaro vermelho": "Acaricidas, controle biológico",
+			"Podridão cinzenta": "Fungicidas, controle cultural"
+		}
+	},
+	{
+		"nome": "Pêra",
+		"solo_ideal": "Rico em matéria orgânica, profundo e bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "800 ml", 
+		"tempo_colheita": "1 ano ou mais",
+		"época_plantio_ideal": "Outono ou início da primavera",
+		"distancia_entre_plantas": "4-5 metros",
+		"profundidade_plantio": "60-70 cm",
+		"pragas_e_doencas_principais": ["Pulgões", "Monilínise", "Ferrugem"],
+		"solucoes": {
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas",
+			"Monilínise": "Poda de partes afetadas, fungicidas",
+			"Ferrugem": "Fungicidas à base de enxofre, controle cultural"
+		}
+	},
+	{
+		"nome": "Pêssego",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "700 ml", 
+		"tempo_colheita": "1 ano",
+		"época_plantio_ideal": "Outono ou início da primavera",
+		"distancia_entre_plantas": "4-5 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Broca-do-pêssego", "Oídio", "Monilínise"],
+		"solucoes": {
+			"Broca-do-pêssego": "Poda de partes afetadas, inseticidas específicos",
+			"Oídio": "Fungicidas à base de enxofre, controle cultural",
+			"Monilínise": "Poda de partes afetadas, fungicidas à base de cobre"
+		}
+	},
+	{
+		"nome": "Pitanga",
+		"solo_ideal": "Ácido, arenoso e bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "500 ml", 
+		"tempo_colheita": "1-2 anos",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "40-50 cm",
+		"pragas_e_doencas_principais": ["Brocas", "Cochonilhas", "Antracnose"],
+		"solucoes": {
+			"Brocas": "Poda de partes afetadas, inseticidas específicos",
+			"Cochonilhas": "Óleo de neem, controle biológico com inimigos naturais",
+			"Antracnose": "Fungicidas à base de cobre, controle cultural"
+		}
+	},
+	{
+		"nome": "Tangerina",
+		"solo_ideal": "Rico em matéria orgânica, bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "600 ml", 
+		"tempo_colheita": "8-10 meses",
+		"época_plantio_ideal": "Primavera",
+		"distancia_entre_plantas": "3-4 metros",
+		"profundidade_plantio": "50-60 cm",
+		"pragas_e_doencas_principais": ["Minador de folhas", "Cancro cítrico", "Pulgões"],
+		"solucoes": {
+			"Minador de folhas": "Controle biológico com parasitoides, inseticidas específicos",
+			"Cancro cítrico": "Poda de partes afetadas, controle químico",
+			"Pulgões": "Sabão inseticida, controle biológico com joaninhas"
+		}
+	},
+	{
+		"nome": "Uva",
+		"solo_ideal": "Rico em matéria orgânica, profundo e bem drenado",
+		"clima": "Ensolarado",
+		"regagem": "Regular",
+		"quantidade_agua_ml": "700 ml", 
+		"tempo_colheita": "1 ano ou mais",
+		"época_plantio_ideal": "Outono",
+		"distancia_entre_plantas": "2-3 metros",
+		"profundidade_plantio": "60-70 cm",
+		"pragas_e_doencas_principais": ["Filoxera", "Míldio", "Oídio"],
+		"solucoes": {
+			"Filoxera": "Enxerto em porta-enxertos resistentes, controle químico",
+			"Míldio": "Fungicidas específicos, controle cultural",
+			"Oídio": "Fungicidas à base de enxofre, controle cultural"
+		}
+	}
+]
+}

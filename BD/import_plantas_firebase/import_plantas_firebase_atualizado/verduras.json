@@ -1,0 +1,428 @@
+{
+    "verduras": [
+        {
+            "nome": "Acelga",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml", 
+            "tempo_colheita": "Contínuo (folhas novas brotam constantemente)",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Mosca-branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Mosca-branca": "Utilizar armadilhas adesivas amarelas, inseticidas naturais"
+            }
+        },
+        {
+            "nome": "Agrião",
+            "solo_ideal": "Úmido, rico em matéria orgânica",
+            "clima": "Sombra parcial",
+            "regagem": "Frequente",
+            "quantidade_agua_ml": "500 ml", 
+            "tempo_colheita": "30-45 dias",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "15-20 cm",
+            "profundidade_plantio": "0,5 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Alface",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "tempo_colheita": "45-60 dias",
+            "época_plantio_ideal": "Outono e primavera",
+            "distancia_entre_plantas": "20 cm",
+            "profundidade_plantio": "1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Oídio"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Oídio": "Melhorar a ventilação, evitar regar as folhas"
+            }
+        },
+            
+        {
+            "nome": "Alfavaca",
+            "solo_ideal": "Bem drenado, rico em matéria orgânica",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "300 ml", 
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera e Verão",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "0,5-1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Mosca-branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Mosca-branca": "Utilizar armadilhas adesivas amarelas, inseticidas naturais"
+            }
+        },
+        {
+            "nome": "Alho-poró",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "450 ml", 
+            "tempo_colheita": "120-150 dias",
+            "época_plantio_ideal": "Outono",
+            "distancia_entre_plantas": "20-25 cm",
+            "profundidade_plantio": "2-3 cm",
+            "pragas_e_doencas_principais": ["Tripes", "Podridão branca"],
+            "solucoes": {
+                "Tripes": "Utilizar armadilhas adesivas azuis, inseticidas naturais",
+                "Podridão branca": "Evitar encharcamento do solo, remover partes afetadas"
+            }
+        },
+        {
+            "nome": "Almeirão",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "350 ml",
+            "tempo_colheita": "Contínuo (folhas novas brotam constantemente)",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "20-30 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Aspargo",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "500 ml",
+            "tempo_colheita": "2-3 anos (para a primeira colheita)",
+            "época_plantio_ideal": "Outono",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "10-15 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Podridão das raízes"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Podridão das raízes": "Drenagem adequada do solo, evitar excesso de umidade"
+            }
+        },
+        {
+            "nome": "Batata-doce",
+            "solo_ideal": "Leve, arenoso e rico em matéria orgânica",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "3-4 meses",
+            "época_plantio_ideal": "Primavera",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "10-15 cm",
+            "pragas_e_doencas_principais": ["Lagartas", "Nematóides", "Podridão seca"],
+            "solucoes": {
+                "Lagartas": "Bacilos de Bacillus thuringiensis (Bt)",
+                "Nematóides": "Rotação de culturas, solarização do solo",
+                "Podridão seca": "Boa drenagem do solo, evitar ferimentos nas raízes"
+            }
+        },
+        {
+            "nome": "Brócolis",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "450 ml",
+            "tempo_colheita": "60-75 dias",
+            "época_plantio_ideal": "Outono e Primavera",
+            "distancia_entre_plantas": "40-50 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lagartas", "Podridão branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lagartas": "Bacilos de Bacillus thuringiensis (Bt)",
+                "Podridão branca": "Evitar encharcamento do solo, rotação de culturas"
+            }
+        },
+        {
+            "nome": "Cebolinha",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "350 ml",
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "15-20 cm",
+            "profundidade_plantio": "1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Mosca-branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Mosca-branca": "Utilizar armadilhas adesivas amarelas, inseticidas naturais"
+            }
+        },
+        {
+            "nome": "Chicória",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "Contínuo (folhas novas brotam constantemente)",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "25-30 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Coentro",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "300 ml",
+            "tempo_colheita": "45-60 dias",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "20-25 cm",
+            "profundidade_plantio": "0,5 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Mosca-branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Mosca-branca": "Utilizar armadilhas adesivas amarelas, inseticidas naturais"
+            }
+        },
+        {
+            "nome": "Couve",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "Contínuo (folhas novas brotam constantemente)",
+            "época_plantio_ideal": "Outono e Primavera",
+            "distancia_entre_plantas": "40-50 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lagartas", "Oídio"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lagartas": "Bacilos de Bacillus thuringiensis (Bt)",
+                "Oídio": "Melhorar a ventilação, evitar regar as folhas"
+            }
+        },
+        {
+            "nome": "Couve-flor",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "450 ml",
+            "tempo_colheita": "70-90 dias",
+            "época_plantio_ideal": "Outono e Primavera",
+            "distancia_entre_plantas": "50-60 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lagartas", "Podridão branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lagartas": "Bacilos de Bacillus thuringiensis (Bt)",
+                "Podridão branca": "Evitar encharcamento do solo, rotação de culturas"
+            }
+        },
+        {
+            "nome": "Endívia",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "350 ml",
+            "tempo_colheita": "60-75 dias",
+            "época_plantio_ideal": "Outono e Primavera",
+            "distancia_entre_plantas": "25-30 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Erva-cidreira",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Sol pleno ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "300 ml",
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Ferrugem"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Ferrugem": "Remover folhas doentes, evitar o molhamento das folhas"
+            }
+        },
+        {
+            "nome": "Erva-doce",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "120-150 dias",
+            "época_plantio_ideal": "Primavera",
+            "distancia_entre_plantas": "25-30 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Oídio"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Oídio": "Melhorar a ventilação, evitar regar as folhas"
+            }
+        },
+
+        {
+            "nome": "Escarola",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "350 ml",
+            "tempo_colheita": "Contínuo (folhas novas brotam constantemente)",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "25-30 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Espinafre",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "45-60 dias",
+            "época_plantio_ideal": "Outono e Primavera",
+            "distancia_entre_plantas": "20-25 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Moscas-brancas", "Oídio"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Moscas-brancas": "Utilizar armadilhas adesivas amarelas, inseticidas naturais",
+                "Oídio": "Melhorar a ventilação, evitar regar as folhas"
+            }
+        },
+        {
+            "nome": "Manjericão",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "300 ml",
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera e Verão",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Mosca-branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Mosca-branca": "Utilizar armadilhas adesivas amarelas, inseticidas naturais"
+            }
+        },
+        {
+            "nome": "Rúcula",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "350 ml",
+            "tempo_colheita": "45-60 dias",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "20-25 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Salsa",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "300 ml",
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "20-25 cm",
+            "profundidade_plantio": "1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Moscas-brancas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Moscas-brancas": "Utilizar armadilhas adesivas amarelas, inseticidas naturais"
+            }
+        },
+        {
+            "nome": "Mostarda",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "45-60 dias",
+            "época_plantio_ideal": "Primavera e Outono",
+            "distancia_entre_plantas": "20-25 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lesmas"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lesmas": "Iscas de cerveja, barreiras físicas"
+            }
+        },
+        {
+            "nome": "Ora-pro-nobis",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Sol pleno ou meia-sombra",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "400 ml",
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera",
+            "distancia_entre_plantas": "50-60 cm",
+            "profundidade_plantio": "2-3 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Ferrugem"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Ferrugem": "Remover folhas doentes, evitar o molhamento das folhas"
+            }
+        },
+        {
+            "nome": "Orégano",
+            "solo_ideal": "Bem drenado, rico em matéria orgânica",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "300 ml",
+            "tempo_colheita": "Contínuo (poda constante para estimular o crescimento)",
+            "época_plantio_ideal": "Primavera",
+            "distancia_entre_plantas": "30-40 cm",
+            "profundidade_plantio": "1 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Ferrugem"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Ferrugem": "Remover folhas doentes, evitar o molhamento das folhas"
+            }
+        },
+        {
+            "nome": "Repolho",
+            "solo_ideal": "Rico em matéria orgânica, bem drenado",
+            "clima": "Ensolarado",
+            "regagem": "Regular",
+            "quantidade_agua_ml": "450 ml",
+            "tempo_colheita": "60-90 dias",
+            "época_plantio_ideal": "Outono e Primavera",
+            "distancia_entre_plantas": "40-50 cm",
+            "profundidade_plantio": "1-2 cm",
+            "pragas_e_doencas_principais": ["Pulgões", "Lagartas", "Podridão branca"],
+            "solucoes": {
+                "Pulgões": "Utilizar sabão inseticida, introduzir joaninhas no cultivo",
+                "Lagartas": "Bacilos de Bacillus thuringiensis (Bt)",
+                "Podridão branca": "Evitar encharcamento do solo, rotação de culturas"
+            }
+        }
+    ]
+}
+        
