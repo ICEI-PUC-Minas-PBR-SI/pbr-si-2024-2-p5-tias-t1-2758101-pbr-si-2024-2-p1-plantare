@@ -5,6 +5,30 @@ import 'core/app_text_styles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'database/database_helper.dart';
 
+class UserSession {
+  static final UserSession _instance = UserSession._internal();
+
+  factory UserSession() {
+    return _instance;
+  }
+
+  UserSession._internal();
+
+  String? loggedInUser;
+
+  void setLoggedInUser(String user) {
+    loggedInUser = user;
+  }
+
+  String? getLoggedInUser() {
+    return loggedInUser;
+  }
+}
+void loginUser(String userId) {
+  UserSession().setLoggedInUser(userId);
+  print("Usuário logado: ${UserSession().getLoggedInUser()}");
+}
+
 void main() async {
    WidgetsFlutterBinding.ensureInitialized();
    try{

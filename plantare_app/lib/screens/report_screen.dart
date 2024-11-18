@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plantare_app/core/app_colors.dart';
 import 'package:plantare_app/core/app_text_styles.dart';
+import '../main.dart';
 
 class ReportScreen extends StatelessWidget {
   @override
@@ -39,14 +40,6 @@ class ReportScreen extends StatelessWidget {
                   color: Colors.black,
                 ),
                 children: [
-                  TextSpan(text: 'Olá, '),
-                  TextSpan(
-                    text: 'Abner ',
-                    style: TextStyle(color: Color(0xFF225149)),
-                  ),
-                  WidgetSpan(
-                    child: Icon(Icons.waving_hand, color: Color(0xFFF65600), size: 24),
-                  ),
                 ],
               ),
             ),

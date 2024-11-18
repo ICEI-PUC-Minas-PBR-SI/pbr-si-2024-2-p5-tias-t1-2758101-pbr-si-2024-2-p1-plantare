@@ -20,14 +20,7 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
             children: [
-              TextSpan(text: 'Olá, '),
-              TextSpan(
-                text: 'Abner',
-                style: TextStyle(
-                  color: Color(0xFF225149), // Verde específico para "Abner"
-                ),
-              ),
-              TextSpan(text: ' ! Vamos cultivar juntos ?'),
+              TextSpan(text: 'Olá, Vamos cultivar juntos ? '),
             ],
           ),
         ),
@@ -71,14 +64,14 @@ class HomeScreen extends StatelessWidget {
               'Dica e tutoriais',
               'Aprenda com especialistas',
               'assets/images/metrics_icon.png',
-              '/tutorials', // Navegação para página de tutoriais
+              '/community', // Navegação para página de tutoriais
             ),
             _buildOption(
               context,
               'Comunidade',
               'Compartilhe e aprenda',
               'assets/images/community_icon.png',
-              '/community', // Navegação para a página de comunidade
+              '/comment', // Navegação para a página de comunidade
             ),
           ],
         ),

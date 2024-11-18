@@ -1,8 +1,79 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import '../core/app_text_styles.dart'; // Certifique-se de que o estilo de fonte de títulos esteja aqui
 import '../core/app_colors.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:plantare_app/database/database_helper.dart';
+import '../main.dart';
 
-class PlantingScreen extends StatelessWidget {
+class PlantingScreen extends StatefulWidget {
+  @override
+  _PlantingScreenState createState() => _PlantingScreenState();
+}
+
+class _PlantingScreenState extends State<PlantingScreen> {
+  List<String> verduras = [];
+  String? selectedVerdura; // Para armazenar a verdura selecionada
+
+  final FirestoreService firestoreService = FirestoreService();
+  
+  TextEditingController dateController = TextEditingController();
+  TextEditingController observationController = TextEditingController();
+  String? selectedSoilType;
+  String? selectedClimate;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchVerduras(); // Chama o método para buscar as verduras
+  }
+
+  void fetchVerduras() async {
+    List<String> fetchedVerduras = await firestoreService.getVerduras();
+    setState(() {
+      verduras = fetchedVerduras; // Atualiza o estado com as verduras obtidas
+    });
+  }
+  Future<void> savePlanting({
+    required String verdura,
+    required String dataPlantio,
+    required String tipoSolo,
+    required String clima,
+    String? observacao,
+  }) async {
+    try {
+      // Referência ao documento que contém o último ID
+      DocumentReference lastIdRef =
+          FirebaseFirestore.instance.collection('metadata').doc('lastPlantingId');
+      DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
+
+      // Determina o próximo ID
+      int newPlantingId;
+      if (lastIdSnapshot.exists) {
+        newPlantingId = lastIdSnapshot['value'] + 1;
+        await lastIdRef.update({'value': newPlantingId});
+      } else {
+        newPlantingId = 1;
+        await lastIdRef.set({'value': newPlantingId});
+      }
+      String userName = UserSession().getLoggedInUser() ?? '';
+      // Salva os dados do plantio na coleção "plantios"
+      await FirebaseFirestore.instance
+          .collection('plantios')
+          .doc(newPlantingId.toString())
+          .set({
+        'Verdura': verdura,
+        'DataPlantio': dataPlantio,
+        'TipoSolo': tipoSolo,
+        'Clima': clima,
+        'Observacao': observacao ?? '', // Campo opcional
+        'Timestamp': FieldValue.serverTimestamp(), // Adiciona a data/hora do servidor
+        'Usuario' : userName
+      });
+      print("Plantio salvo com sucesso! ID: $newPlantingId");
+    } catch (e) {
+      print("Erro ao salvar plantio: $e");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,9 +140,27 @@ class PlantingScreen extends StatelessWidget {
             SizedBox(height: 16),
 
             // Campo para Nome da Semente/Planta com fundo preto e texto branco
-            TextField(
+            DropdownButtonFormField<String>(
+              value: selectedVerdura,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedVerdura = newValue; // Atualiza a verdura selecionada
+                });
+              },
+              items: verduras.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                      fontFamily: 'Manrope',
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+              }).toList(),
               decoration: InputDecoration(
-                labelText: 'Nome da semente/planta',
+                labelText: 'Selecione uma verdura',
                 labelStyle: TextStyle(
                   fontFamily: 'Manrope',
                   fontSize: 16,
@@ -84,13 +173,21 @@ class PlantingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
+                hintText: 'Dica: Escolha uma verdura para plantar',
+                hintStyle: TextStyle(
+                  fontFamily: 'Manrope',
+                  color: Colors.grey,
+                  fontWeight: FontWeight.normal,
+                ),
               ),
+              dropdownColor: Color(0xFF180F0F),
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 16),
 
             // Campo de Data com entrada numérica e ícone de calendário
             TextField(
+              controller: dateController,
               keyboardType: TextInputType.datetime,
               decoration: InputDecoration(
                 labelText: 'Insira a data do seu plantio',
@@ -116,6 +213,12 @@ class PlantingScreen extends StatelessWidget {
 
             // Dropdown para Tipo de Solo com fundo preto e texto branco
             DropdownButtonFormField<String>(
+              value: selectedSoilType,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedSoilType = value;
+                });
+              },
               items: [
                 'Latossolos',
                 'Argissolos',
@@ -135,7 +238,6 @@ class PlantingScreen extends StatelessWidget {
                   ),
                 ),
               )).toList(),
-              onChanged: (value) {},
               decoration: InputDecoration(
                 labelText: 'Tipo de solo',
                 labelStyle: TextStyle(
@@ -150,20 +252,19 @@ class PlantingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   borderSide: BorderSide.none,
                 ),
-                hintText: 'Dica: Certifique-se de usar um solo bem drenado para ervas',
-                hintStyle: TextStyle(
-                  fontFamily: 'Manrope',
-                  color: Colors.grey,
-                  fontWeight: FontWeight.normal,
-                ),
               ),
               dropdownColor: Color(0xFF180F0F),
-              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 16),
 
             // Dropdown para Clima de Hoje com fundo preto e texto branco
             DropdownButtonFormField<String>(
+              value: selectedClimate,
+              onChanged: (String? value) {
+                setState(() {
+                  selectedClimate = value;
+                });
+              },
               items: [
                 'Seco',
                 'Úmido',
@@ -180,7 +281,6 @@ class PlantingScreen extends StatelessWidget {
                   ),
                 ),
               )).toList(),
-              onChanged: (value) {},
               decoration: InputDecoration(
                 labelText: 'Qual o clima de hoje?',
                 labelStyle: TextStyle(
@@ -197,12 +297,12 @@ class PlantingScreen extends StatelessWidget {
                 ),
               ),
               dropdownColor: Color(0xFF180F0F),
-              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 16),
 
             // Área de texto para Observações com altura reduzida
             TextField(
+              controller: observationController,
               maxLines: 2, // Diminui o número de linhas para deixar a caixa menor
               decoration: InputDecoration(
                 hintText: 'Adicione uma observação...',
@@ -226,8 +326,29 @@ class PlantingScreen extends StatelessWidget {
               children: [
                 // Botão Salvar
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/report'); // Navegar para Relatório
+                  onPressed: () async {
+                    if (selectedVerdura != null &&
+                        dateController.text.isNotEmpty &&
+                        selectedSoilType != null &&
+                        selectedClimate != null) {
+                      try {
+                        await savePlanting(
+                          verdura: selectedVerdura!,
+                          dataPlantio: dateController.text,
+                          tipoSolo: selectedSoilType!,
+                          clima: selectedClimate!,
+                          observacao: observationController.text.isNotEmpty
+                              ? observationController.text
+                              : null,
+                        );
+                        print("Plantio cadastrado com sucesso!");
+                        Navigator.pushNamed(context, '/report');
+                      } catch (e) {
+                        print("Erro ao salvar plantio: $e");
+                      }
+                    } else {
+                      print("Preencha todos os campos obrigatórios antes de salvar.");
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFF8EAD85),
