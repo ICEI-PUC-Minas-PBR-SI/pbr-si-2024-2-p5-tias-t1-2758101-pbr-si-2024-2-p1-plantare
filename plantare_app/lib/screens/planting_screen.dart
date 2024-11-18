@@ -26,26 +26,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
     super.initState();
     fetchVerduras(); // Chama o método para buscar as verduras
   }
-Future<String?> getUserNameById(String userId) async {
-  try {
-    // Obtém o documento do usuário pelo ID
-    DocumentSnapshot doc = await FirebaseFirestore.instance
-        .collection('usuarios')
-        .doc(userId)
-        .get();
 
-    if (doc.exists) {
-      // Retorna o nome do usuário
-      return doc['Nome'] as String?;
-    } else {
-      print("Usuário com ID $userId não encontrado!");
-      return null;
-    }
-  } catch (e) {
-    print("Erro ao buscar usuário: $e");
-    return null;
-  }
-}
   void fetchVerduras() async {
     List<String> fetchedVerduras = await firestoreService.getVerduras();
     setState(() {

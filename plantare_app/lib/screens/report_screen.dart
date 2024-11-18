@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plantare_app/core/app_colors.dart';
 import 'package:plantare_app/core/app_text_styles.dart';
+import '../main.dart';
 
 class ReportScreen extends StatelessWidget {
   @override
