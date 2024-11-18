@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
               'Dica e tutoriais',
               'Aprenda com especialistas',
               'assets/images/metrics_icon.png',
-              '/tutorials', // Navegação para página de tutoriais
+              '/community', // Navegação para página de tutoriais
             ),
             _buildOption(
               context,

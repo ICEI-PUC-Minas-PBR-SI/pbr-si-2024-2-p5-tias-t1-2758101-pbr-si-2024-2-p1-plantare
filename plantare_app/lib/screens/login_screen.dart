@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../main.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -28,7 +29,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (querySnapshot.docs.isNotEmpty) {
         // Login bem-sucedido
+        DocumentSnapshot doc = querySnapshot.docs.first;
         Navigator.pushReplacementNamed(context, '/home'); // Navega para a tela principal
+        loginUser(doc.id);
       } else {
         // Exibe popup de erro
         _showErrorDialog("E-mail ou senha incorretos.");

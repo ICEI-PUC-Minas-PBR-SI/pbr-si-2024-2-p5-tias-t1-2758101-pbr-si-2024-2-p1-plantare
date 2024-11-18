@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../main.dart';
 
 class CommentScreen extends StatefulWidget {
   @override
@@ -9,7 +10,26 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   final TextEditingController _commentController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+Future<String?> getUserNameById(String userId) async {
+  try {
+    // Obtém o documento do usuário pelo ID
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection('usuarios')
+        .doc(userId)
+        .get();
 
+    if (doc.exists) {
+      // Retorna o nome do usuário
+      return doc['Nome'] as String?;
+    } else {
+      print("Usuário com ID $userId não encontrado!");
+      return null;
+    }
+  } catch (e) {
+    print("Erro ao buscar usuário: $e");
+    return null;
+  }
+}
   Future<void> addCommentWithId(String nomeUsuario, String comentario) async {
   try {
     DocumentReference lastIdRef = _firestore.collection('metadata').doc('lastCommentId');
@@ -177,8 +197,13 @@ class _CommentScreenState extends State<CommentScreen> {
         SizedBox(width: 8),
         IconButton(
           icon: Icon(Icons.send, color: Color(0xFF225149)),
-          onPressed: () {
-            addCommentWithId('Você',_commentController.text);
+          onPressed: () async {
+            String? userName = await getUserNameById(UserSession().getLoggedInUser() ?? "");
+            if (userName != null) {
+              addCommentWithId(userName, _commentController.text);
+            } else {
+              print("Erro: Nome do usuário não encontrado!");
+            }
           },
         ),
       ],
