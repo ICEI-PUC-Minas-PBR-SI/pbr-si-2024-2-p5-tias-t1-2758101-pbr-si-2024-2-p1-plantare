@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../main.dart';
 
 class CommentScreen extends StatefulWidget {
   @override
@@ -10,57 +9,70 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   final TextEditingController _commentController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-Future<String?> getUserNameById(String userId) async {
-  try {
-    // Obtém o documento do usuário pelo ID
-    DocumentSnapshot doc = await FirebaseFirestore.instance
-        .collection('usuarios')
-        .doc(userId)
-        .get();
 
-    if (doc.exists) {
-      // Retorna o nome do usuário
-      return doc['Nome'] as String?;
-    } else {
-      print("Usuário com ID $userId não encontrado!");
-      return null;
+  Map<String, bool> likedComments = {};
+
+  Future<void> addCommentWithId(String nomeUsuario, String comentario, {String? parentId}) async {
+    try {
+      DocumentReference lastIdRef = _firestore.collection('metadata').doc('lastCommentId');
+      DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
+
+      int newCommentId;
+      if (lastIdSnapshot.exists) {
+        newCommentId = lastIdSnapshot['value'] + 1;
+        await lastIdRef.update({'value': newCommentId});
+      } else {
+        newCommentId = 1;
+        await lastIdRef.set({'value': newCommentId});
+      }
+
+      await _firestore.collection('comentarios').doc(newCommentId.toString()).set({
+        'nomeUsuario': nomeUsuario,
+        'comentario': comentario,
+        'parentId': parentId ?? 'root',
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+    } catch (e) {
+      print("Erro ao adicionar comentário: $e");
     }
-  } catch (e) {
-    print("Erro ao buscar usuário: $e");
-    return null;
   }
-}
-  Future<void> addCommentWithId(String nomeUsuario, String comentario) async {
-  try {
-    DocumentReference lastIdRef = _firestore.collection('metadata').doc('lastCommentId');
-    DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
 
-    int newCommentId;
-    if (lastIdSnapshot.exists) {
-      newCommentId = lastIdSnapshot['value'] + 1;
-      await lastIdRef.update({'value': newCommentId});
-    } else {
-      newCommentId = 1;
-      await lastIdRef.set({'value': newCommentId});
-    }
-
-    await _firestore.collection('comentarios').doc(newCommentId.toString()).set({
-      'nomeUsuario': nomeUsuario,
-      'comentario': comentario,
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-
-    print("Comentário adicionado com sucesso! ID: $newCommentId");
-  } catch (e) {
-    print("Erro ao adicionar comentário: $e");
+  void _showShareOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(Icons.facebook, color: Colors.blue),
+              title: Text('Compartilhar no Facebook'),
+              onTap: () {
+                Navigator.pop(context);
+                print('Compartilhado no Facebook');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.share, color: Colors.purple),
+              title: Text('Compartilhar no Instagram'),
+              onTap: () {
+                Navigator.pop(context);
+                print('Compartilhado no Instagram');
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFD9D9D9),
       appBar: AppBar(
-        backgroundColor: Color(0xFFD9D9D9),
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -83,7 +95,10 @@ Future<String?> getUserNameById(String userId) async {
           children: [
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: _firestore.collection('comentarios').orderBy('timestamp', descending: true).snapshots(),
+                stream: _firestore
+                    .collection('comentarios')
+                    .orderBy('timestamp', descending: false)
+                    .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -94,21 +109,22 @@ Future<String?> getUserNameById(String userId) async {
 
                   final comments = snapshot.data!.docs;
 
-                  return ListView.builder(
-                    itemCount: comments.length,
-                    itemBuilder: (context, index) {
-                      final commentData = comments[index];
+                  Map<String, List<QueryDocumentSnapshot>> commentsByParent = {};
+                  for (var comment in comments) {
+                    final commentData = comment.data() as Map<String, dynamic>?;
 
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildComment(
-                            userName: commentData['nomeUsuario'] ?? 'Anônimo',
-                            comment: commentData['comentario'] ?? ''
-                          ),
-                        ],
-                      );
-                    },
+                    String parentId = (commentData != null && commentData.containsKey('parentId'))
+                        ? commentData['parentId'] as String
+                        : 'root';
+
+                    if (!commentsByParent.containsKey(parentId)) {
+                      commentsByParent[parentId] = [];
+                    }
+                    commentsByParent[parentId]!.add(comment);
+                  }
+
+                  return ListView(
+                    children: _buildCommentTree('root', commentsByParent),
                   );
                 },
               ),
@@ -123,46 +139,157 @@ Future<String?> getUserNameById(String userId) async {
     );
   }
 
+  List<Widget> _buildCommentTree(String parentId, Map<String, List<QueryDocumentSnapshot>> commentsByParent) {
+    if (!commentsByParent.containsKey(parentId)) {
+      return [];
+    }
+
+    return commentsByParent[parentId]!.map((commentData) {
+      String commentId = commentData.id;
+      final commentContent = commentData.data() as Map<String, dynamic>?;
+
+      return Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 5,
+            color: Colors.green,
+            margin: EdgeInsets.only(right: 8),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildComment(
+                  userName: commentContent?['nomeUsuario'] ?? 'Anônimo',
+                  comment: commentContent?['comentario'] ?? '',
+                  onReply: () {
+                    _showReplyDialog(commentId);
+                  },
+                ),
+                ..._buildCommentTree(commentId, commentsByParent),
+              ],
+            ),
+          ),
+        ],
+      );
+    }).toList();
+  }
+
   Widget _buildComment({
     required String userName,
-    required String comment
+    required String comment,
+    required VoidCallback onReply,
   }) {
     return Container(
-      padding: EdgeInsets.all(12),
       margin: EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: Color(0xFFB8DFD8),
-        borderRadius: BorderRadius.circular(12),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.person, color: Colors.yellow[700], size: 24),
+              CircleAvatar(
+                backgroundColor: Colors.yellow[700],
+                child: Icon(Icons.person, color: Colors.white),
+              ),
               SizedBox(width: 8),
-              Text(
-                userName,
-                style: TextStyle(
-                  fontFamily: 'Manrope',
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+              Expanded(
+                child: Text(
+                  userName,
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
               ),
             ],
           ),
           SizedBox(height: 4),
-          Text(
-            comment,
-            style: TextStyle(
-              fontFamily: 'Manrope',
-              fontSize: 14,
-              color: Colors.black87,
+          Padding(
+            padding: const EdgeInsets.only(left: 48.0),
+            child: Text(
+              comment,
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 14,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 48.0, top: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        likedComments[comment] == true ? Icons.favorite : Icons.favorite_border,
+                        color: likedComments[comment] == true ? Colors.red : Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          likedComments[comment] = !(likedComments[comment] ?? false);
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.share, color: Colors.blue),
+                      onPressed: _showShareOptions,
+                    ),
+                  ],
+                ),
+                TextButton.icon(
+                  onPressed: onReply,
+                  icon: Icon(Icons.reply, color: Color(0xFFF65600)),
+                  label: Text(
+                    'Responder',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 12,
+                      color: Color(0xFFF65600),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showReplyDialog(String parentId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        TextEditingController replyController = TextEditingController();
+        return AlertDialog(
+          title: Text('Responder comentário'),
+          content: TextField(
+            controller: replyController,
+            decoration: InputDecoration(hintText: 'Escreva sua resposta...'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () {
+                addCommentWithId('Você', replyController.text, parentId: parentId);
+                Navigator.pop(context);
+              },
+              child: Text('Enviar'),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -173,7 +300,7 @@ Future<String?> getUserNameById(String userId) async {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: Color(0xFFE5E5E5),
+              color: Color(0xFFF5F5F5),
               borderRadius: BorderRadius.circular(20),
             ),
             child: TextField(
@@ -181,13 +308,13 @@ Future<String?> getUserNameById(String userId) async {
               decoration: InputDecoration(
                 hintText: 'Escreva um comentário...',
                 hintStyle: TextStyle(
-                  fontFamily: 'Manrope',
+                  fontFamily: 'Roboto',
                   color: Colors.grey,
                 ),
                 border: InputBorder.none,
               ),
               style: TextStyle(
-                fontFamily: 'Manrope',
+                fontFamily: 'Roboto',
                 fontSize: 14,
                 color: Colors.black,
               ),
@@ -196,14 +323,9 @@ Future<String?> getUserNameById(String userId) async {
         ),
         SizedBox(width: 8),
         IconButton(
-          icon: Icon(Icons.send, color: Color(0xFF225149)),
-          onPressed: () async {
-            String? userName = await getUserNameById(UserSession().getLoggedInUser() ?? "");
-            if (userName != null) {
-              addCommentWithId(userName, _commentController.text);
-            } else {
-              print("Erro: Nome do usuário não encontrado!");
-            }
+          icon: Icon(Icons.send, color: Color(0xFF00796B)),
+          onPressed: () {
+            addCommentWithId('Você', _commentController.text);
           },
         ),
       ],
