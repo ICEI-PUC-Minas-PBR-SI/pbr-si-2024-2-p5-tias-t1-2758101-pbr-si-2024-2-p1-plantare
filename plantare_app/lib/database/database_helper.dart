@@ -6,6 +6,7 @@ import 'database_helper_mobile.dart'
     if (dart.library.html) 'database_helper_web.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'info_plantio.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -21,6 +22,17 @@ class FirestoreService {
       }
     } catch (e) {
       print("Erro ao buscar dados: $e");
+    }
+  }
+
+  Future<List<InfoPlantio>> getPlantios() async {
+    try {
+      QuerySnapshot snapshot = await _firestore.collection('plantios').get();
+      List<InfoPlantio> plantios = [];
+      return plantios;
+    } catch (e) {
+      print("Erro ao buscar os plantios: $e");
+      return [];
     }
   }
 
