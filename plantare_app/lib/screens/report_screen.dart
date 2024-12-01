@@ -128,6 +128,64 @@ class _ReportScreenState extends State<ReportScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Container(
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(Icons.home, color: Color(0xFF000000)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home'); // Navegar para Home
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.people, color: Color(0xFF000000)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/community'); // Navegar para Comunidade
+                },
+              ),
+              SizedBox(width: 40), // Espaço para o botão central
+              IconButton(
+                icon: Icon(Icons.analytics, color: Color(0xFF000000)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/report'); // Navegar para Métricas
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.person, color: Color(0xFF000000)),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile'); // Navegar para Perfil
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Container(
+        height: 56.0,
+        width: 56.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [Color(0xFF04BB86), Color(0xFF225149)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/planting'); // Navegar para Plantio
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Icon(Icons.add, color: Colors.white),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

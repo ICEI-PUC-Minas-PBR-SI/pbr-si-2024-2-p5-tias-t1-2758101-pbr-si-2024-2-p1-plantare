@@ -397,35 +397,65 @@ class _PlantingScreenState extends State<PlantingScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xFF04BB86),
-        unselectedItemColor: Colors.grey,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Início',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
-            label: 'Métricas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-        ],
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushNamed(context, '/home');
-          } else if (index == 1) {
-            Navigator.pushNamed(context, '/report');
-          } else if (index == 2) {
-            Navigator.pushNamed(context, '/planting');
-          }
-        },
-      ),
+      floatingActionButton: Container(
+  height: 56.0,
+  width: 56.0,
+  decoration: BoxDecoration(
+    shape: BoxShape.circle,
+    gradient: LinearGradient(
+      colors: [Color(0xFF04BB86), Color(0xFF225149)],
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+    ),
+  ),
+  child: FloatingActionButton(
+    onPressed: () {
+      Navigator.pushNamed(context, '/community'); // Direciona para a comunidade
+    },
+    backgroundColor: Colors.transparent,
+    elevation: 0,
+    child: Icon(Icons.add, color: Colors.white),
+  ),
+),
+floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+bottomNavigationBar: BottomAppBar(
+  shape: CircularNotchedRectangle(),
+  notchMargin: 8.0,
+  child: Container(
+    height: 60.0,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        IconButton(
+          icon: Icon(Icons.home),
+          onPressed: () {
+            Navigator.pushNamed(context, '/home'); // Direciona para Home
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.people),
+          onPressed: () {
+            Navigator.pushNamed(context, '/community'); // Direciona para Comunidade
+          },
+        ),
+        SizedBox(width: 40), // Espaço para o botão central
+        IconButton(
+          icon: Icon(Icons.analytics),
+          onPressed: () {
+            Navigator.pushNamed(context, '/report'); // Direciona para Métricas
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            Navigator.pushNamed(context, '/profile'); // Direciona para Perfil
+          },
+        ),
+      ],
+    ),
+  ),
+),
+
     );
   }
 }

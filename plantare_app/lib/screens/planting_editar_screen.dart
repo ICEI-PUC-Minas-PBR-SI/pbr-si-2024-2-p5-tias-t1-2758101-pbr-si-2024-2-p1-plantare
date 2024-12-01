@@ -33,38 +33,38 @@ class _PlantingScreenState extends State<PlantingScreen> {
     });
   }
 
-  Future<void> _selectDate(
-      BuildContext context, TextEditingController controller) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: ColorScheme.light(
-              primary: Color(0xFF04BB86),
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
-            ),
-            dialogBackgroundColor: Colors.white,
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: Color(0xFF04BB86),
-              ),
+  Future<void> _selectDate(BuildContext context, TextEditingController controller) async {
+  final DateTime? picked = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2000),
+    lastDate: DateTime(2100),
+    builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData.light().copyWith(
+          colorScheme: ColorScheme.light(
+            primary: Color(0xFF04BB86), 
+            onPrimary: Colors.white,   
+            onSurface: Colors.black,   
+          ),
+          dialogBackgroundColor: Colors.white, 
+          textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              foregroundColor: Color(0xFF04BB86), 
             ),
           ),
-          child: child!,
-        );
-      },
-    );
+        ),
+        child: child!,
+      );
+    },
+  );
 
-    if (picked != null) {
-      String formattedDate = "${picked.day}/${picked.month}/${picked.year}";
-      controller.text = formattedDate;
-    }
+  if (picked != null) {
+    String formattedDate = "${picked.day}/${picked.month}/${picked.year}";
+    controller.text = formattedDate;
   }
+}
+
 
   Future<void> savePlanting({
     required String verdura,
@@ -110,74 +110,73 @@ class _PlantingScreenState extends State<PlantingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Header
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF04BB86), Color(0xFF225149)],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+      backgroundColor: Colors.white, 
+      body: Column(
+        children: [
+      
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF04BB86), Color(0xFF225149)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+              
+                Image.asset(
+                  'assets/images/onboarding_image.png', 
+                  height: 40,
+                  width: 40,
                 ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    'assets/images/onboarding_image.png',
-                    height: 40,
-                    width: 40,
+                Text(
+                  "PLANTARE",
+                  style: TextStyle(
+                    fontFamily: 'Outfit',
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  Text(
-                    "PLANTARE",
-                    style: TextStyle(
-                      fontFamily: 'Outfit',
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Icon(Icons.search, color: Colors.white),
-                ],
-              ),
+                ),
+                Icon(Icons.search, color: Colors.white), 
+              ],
             ),
-
-            // Title
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "EDITAR",
-                      style: TextStyle(
-                        fontFamily: 'Outfit',
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Form
-            Padding(
+          ),
+ Padding(
+  padding: const EdgeInsets.symmetric(vertical: 16.0),
+  child: Stack(
+    children: [
+    
+      Align(
+        alignment: Alignment.centerLeft,
+        child: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.grey),
+          onPressed: () {
+            Navigator.pop(context); 
+          },
+        ),
+      ),
+      
+      Align(
+        alignment: Alignment.center,
+        child: Text(
+          "EDITAR",
+          style: TextStyle(
+            fontFamily: 'Outfit',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+          Expanded(
+            child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -204,9 +203,10 @@ class _PlantingScreenState extends State<PlantingScreen> {
                   ),
                   SizedBox(height: 16),
 
+                  
                   TextField(
                     controller: dateController,
-                    readOnly: true,
+                    readOnly: true, 
                     decoration: InputDecoration(
                       labelText: 'Data do Plantio',
                       border: OutlineInputBorder(
@@ -222,7 +222,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
 
                   TextField(
                     controller: dateColheitaController,
-                    readOnly: true,
+                    readOnly: true, 
                     decoration: InputDecoration(
                       labelText: 'Data de Colheita',
                       border: OutlineInputBorder(
@@ -315,7 +315,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.yellow,
+                          backgroundColor: Colors.yellow, 
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -368,12 +368,12 @@ class _PlantingScreenState extends State<PlantingScreen> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        selectedItemColor: Color(0xFF04BB86),
+        selectedItemColor: Color(0xFF04BB86), 
         unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(

@@ -76,58 +76,79 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      // Barra de navegação inferior personalizada
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Color(0xFF0F6D5F), // Linha verde no topo da barra
-              width: 4, // Aumentando a espessura da linha verde
-            ),
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Container(
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(Icons.home),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home'); // Navegar para Home
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.people),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/community'); // Navegar para Comunidade
+                },
+              ),
+              SizedBox(width: 40), // Espaço para o botão central
+              IconButton(
+                icon: Icon(Icons.analytics),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/report'); // Navegar para Métricas
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile'); // Navegar para Perfil
+                },
+              ),
+            ],
           ),
         ),
-        child: BottomNavigationBar(
-          backgroundColor: Color(0xFFECECEC), // Cinza claro para fundo da barra
-          selectedItemColor: Color(0xFF0F6D5F), // Verde para o item selecionado
-          unselectedItemColor: Colors.grey,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 24),
-              label: 'Início',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.pie_chart, size: 24),
-              label: 'Métricas',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 24),
-              label: 'Perfil',
-            ),
-          ],
-          currentIndex: 0,
-          onTap: (index) {
-            // Redireciona para as telas específicas com base no índice selecionado
-            if (index == 0) {
-              Navigator.pushNamed(context, '/home');
-            } else if (index == 1) {
-              Navigator.pushNamed(context, '/report');
-            } else if (index == 2) {
-              Navigator.pushNamed(context, '/planting');
-            }
+      ),
+      floatingActionButton: Container(
+        height: 56.0,
+        width: 56.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [Color(0xFF04BB86), Color(0xFF225149)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/planting'); // Navegar para Plantio
           },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Icon(Icons.add, color: Colors.white),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
-  // Definição do método _buildOption com fontes ajustadas, ícones à direita, e navegação personalizada
-  Widget _buildOption(BuildContext context, String title, String subtitle, String iconPath, String route) {
+  // Método auxiliar para criar os blocos de opções no corpo
+  Widget _buildOption(
+    BuildContext context,
+    String title,
+    String subtitle,
+    String iconPath,
+    String route,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.9, // Largura ajustada para o tamanho do frame
+        width: MediaQuery.of(context).size.width * 0.9, // Largura ajustada
         decoration: BoxDecoration(
           color: Colors.black, // Fundo preto dos botões
           borderRadius: BorderRadius.circular(20), // Borda arredondada
@@ -156,7 +177,7 @@ class HomeScreen extends StatelessWidget {
             height: 40, // Ícone com tamanho fixo
           ),
           onTap: () {
-            Navigator.pushNamed(context, route); // Navegação ao clicar no botão
+            Navigator.pushNamed(context, route); // Navegar ao clicar
           },
         ),
       ),
