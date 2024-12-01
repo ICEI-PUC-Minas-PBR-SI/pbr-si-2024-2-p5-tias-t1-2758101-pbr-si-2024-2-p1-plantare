@@ -17,6 +17,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
   final FirestoreService firestoreService = FirestoreService();
   
   TextEditingController dateController = TextEditingController();
+  TextEditingController dateColheitaController = TextEditingController();
   TextEditingController observationController = TextEditingController();
   String? selectedSoilType;
   String? selectedClimate;
@@ -36,6 +37,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
   Future<void> savePlanting({
     required String verdura,
     required String dataPlantio,
+    required String dataColheita,
     required String tipoSolo,
     required String clima,
     String? observacao,
@@ -63,6 +65,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
           .set({
         'Verdura': verdura,
         'DataPlantio': dataPlantio,
+        'DataColheita': dataColheita,
         'TipoSolo': tipoSolo,
         'Clima': clima,
         'Observacao': observacao ?? '', // Campo opcional
@@ -211,6 +214,30 @@ class _PlantingScreenState extends State<PlantingScreen> {
             ),
             SizedBox(height: 16),
 
+            TextField(
+              controller: dateColheitaController,
+              keyboardType: TextInputType.datetime,
+              decoration: InputDecoration(
+                labelText: 'Insira a data de colheita do seu plantio',
+                labelStyle: TextStyle(
+                  fontFamily: 'Manrope',
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                suffixIcon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.grey,
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             // Dropdown para Tipo de Solo com fundo preto e texto branco
             DropdownButtonFormField<String>(
               value: selectedSoilType,
@@ -335,6 +362,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                         await savePlanting(
                           verdura: selectedVerdura!,
                           dataPlantio: dateController.text,
+                          dataColheita: dateColheitaController.text,
                           tipoSolo: selectedSoilType!,
                           clima: selectedClimate!,
                           observacao: observationController.text.isNotEmpty

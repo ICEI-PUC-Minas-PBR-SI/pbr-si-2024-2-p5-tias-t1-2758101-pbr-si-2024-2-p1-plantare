@@ -7,9 +7,73 @@ import 'database_helper_mobile.dart'
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'info_plantio.dart';
+import '../main.dart';
 
 class FirestoreService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  
+Future<List<Map<String, dynamic>>> getPlantiosComPeriodo() async {
+  try {
+    String userName = UserSession().getLoggedInUser() ?? '';
+    // Busca os plantios do usuário logado
+    QuerySnapshot plantioSnapshot = await _firestore
+        .collection('plantios')
+        .where('Usuario', isEqualTo: userName)
+        .get();
+
+    List<Map<String, dynamic>> plantios = await Future.wait(
+      plantioSnapshot.docs.map((doc) async {
+        var data = doc.data() as Map<String, dynamic>;
+        String verduraNome = data['Verdura'];
+        String dataPlantioString = data['DataPlantio'];
+        String? dataColheitaString = data['DataColheita'];
+
+        // Converte as datas
+        List<String> parts = dataPlantioString.split('/');
+        int day = int.parse(parts[0]);
+        int month = int.parse(parts[1]);
+        int year = int.parse(parts[2]);
+        DateTime dataPlantio = DateTime(year, month, day);
+
+        DateTime? dataColheita;
+        if (dataColheitaString != null) {
+          parts = dataColheitaString.split('/');
+          day = int.parse(parts[0]);
+          month = int.parse(parts[1]);
+          year = int.parse(parts[2]);
+          dataColheita = DateTime(year, month, day);
+        }
+
+        int? periodoEmDias = dataColheita != null
+            ? dataColheita.difference(dataPlantio).inDays
+            : null;
+
+        // Busca os detalhes da verdura
+        DocumentSnapshot verduraDoc = await _firestore
+            .collection('verduras')
+            .doc(verduraNome)
+            .get();
+
+        Map<String, dynamic> verduraDetails =
+            verduraDoc.exists ? verduraDoc.data() as Map<String, dynamic> : {};
+
+        return {
+          'nome': verduraNome,
+          'dataPlantio': dataPlantio,
+          'dataColheita': dataColheita,
+          'periodoEmDias': periodoEmDias,
+          'verduraDetails': verduraDetails,
+        };
+      }).toList(),
+    );
+
+    return plantios;
+  } catch (e) {
+    print("Erro ao buscar plantios: $e");
+    return [];
+  }
+}
+
 
   Future<void> getData() async {
     try {
