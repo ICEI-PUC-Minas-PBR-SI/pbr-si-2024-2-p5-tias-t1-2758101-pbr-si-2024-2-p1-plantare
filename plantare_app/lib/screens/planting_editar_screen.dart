@@ -146,7 +146,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
               ),
             ),
 
-            // Title and instructions
+            // Title
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Stack(
@@ -163,7 +163,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "ADICIONAR PLANTIO",
+                      "EDITAR",
                       style: TextStyle(
                         fontFamily: 'Outfit',
                         fontSize: 20,
@@ -175,40 +175,8 @@ class _PlantingScreenState extends State<PlantingScreen> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.yellow,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Preencha as informações abaixo para acompanhar sua nova plantação',
-                          style: TextStyle(
-                            fontFamily: 'Outfit',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                      Image.asset(
-                        'assets/images/planting_bag.png',
-                        height: 50,
-                        width: 50,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
 
-            // Form content
+            // Form
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -235,6 +203,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
+
                   TextField(
                     controller: dateController,
                     readOnly: true,
@@ -250,6 +219,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                     },
                   ),
                   SizedBox(height: 16),
+
                   TextField(
                     controller: dateColheitaController,
                     readOnly: true,
@@ -265,6 +235,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                     },
                   ),
                   SizedBox(height: 16),
+
                   DropdownButtonFormField<String>(
                     value: selectedSoilType,
                     onChanged: (String? newValue) {
@@ -295,6 +266,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
+
                   DropdownButtonFormField<String>(
                     value: selectedClimate,
                     onChanged: (String? newValue) {
@@ -322,6 +294,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
+
                   TextField(
                     controller: observationController,
                     maxLines: 2,
@@ -333,6 +306,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                     ),
                   ),
                   SizedBox(height: 24),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -345,8 +319,8 @@ class _PlantingScreenState extends State<PlantingScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 14, horizontal: 32),
+                          padding:
+                              EdgeInsets.symmetric(vertical: 14, horizontal: 32),
                         ),
                         child: Text(
                           'Cancelar',
