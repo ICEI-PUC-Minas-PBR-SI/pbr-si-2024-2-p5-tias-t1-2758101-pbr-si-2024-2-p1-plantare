@@ -1,74 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../main.dart';
+import '../database/database_helper.dart';
 
 class CommentScreen extends StatefulWidget {
+  final String userId = UserSession().getLoggedInUser() ?? '';
+
+  CommentScreen();
+
   @override
   _CommentScreenState createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  final String userId = UserSession().getLoggedInUser() ?? '';
   final TextEditingController _commentController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Map<String, bool> likedComments = {};
+  final FirestoreService firestoreService = FirestoreService();
 
-  Future<void> addCommentWithId(String nomeUsuario, String comentario, {String? parentId}) async {
+  int userCommentCount = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserCommentCount();
+  }
+
+  Future<void> _fetchUserCommentCount() async {
     try {
-      DocumentReference lastIdRef = _firestore.collection('metadata').doc('lastCommentId');
-      DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
+      QuerySnapshot userComments = await _firestore
+          .collection('comentarios')
+          .where('usuario', isEqualTo: userId)
+          .get();
 
-      int newCommentId;
-      if (lastIdSnapshot.exists) {
-        newCommentId = lastIdSnapshot['value'] + 1;
-        await lastIdRef.update({'value': newCommentId});
-      } else {
-        newCommentId = 1;
-        await lastIdRef.set({'value': newCommentId});
-      }
-
-      await _firestore.collection('comentarios').doc(newCommentId.toString()).set({
-        'nomeUsuario': nomeUsuario,
-        'comentario': comentario,
-        'parentId': parentId ?? 'root',
-        'timestamp': FieldValue.serverTimestamp(),
+      setState(() {
+        userCommentCount = userComments.size;
       });
     } catch (e) {
-      print("Erro ao adicionar comentário: $e");
+      print("Erro ao buscar contagem de comentários: $e");
     }
   }
 
-  void _showShareOptions() {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => Container(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.facebook, color: Colors.blue),
-              title: Text('Compartilhar no Facebook'),
-              onTap: () {
-                Navigator.pop(context);
-                print('Compartilhado no Facebook');
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.share, color: Colors.purple),
-              title: Text('Compartilhar no Instagram'),
-              onTap: () {
-                Navigator.pop(context);
-                print('Compartilhado no Instagram');
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+  Future<String?> _getUserName(String userId) async {
+    if (userId.isEmpty) {
+      return 'Usuário Desconhecido';
+    }
+    try {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('usuarios').doc(userId).get();
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>?;
+        return userData?['Nome'] ?? 'Usuário Desconhecido';
+      }
+      return 'Usuário Desconhecido';
+    } catch (e) {
+      print('Erro ao buscar nome do usuário: $e');
+      return 'Usuário Desconhecido';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    String _getContributionMessage(int count) {
+    if (count >= 20) {
+      return count.toString() + " comentários. Contribuidor Estrela! 🌟";
+    } else if (count >= 10) {
+      return count.toString() + " comentários. Contribuidor Proativo! 🚀";
+    } else if (count >= 5) {
+      return count.toString() + " comentários. Contribuidor Regular! 🧐";
+    } else {
+      return count.toString() + " comentários. Começando a Contribuir! 😄";
+    }
+  }
     return Scaffold(
       backgroundColor: Color(0xFFD9D9D9),
       appBar: AppBar(
@@ -78,14 +82,27 @@ class _CommentScreenState extends State<CommentScreen> {
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text(
-          'Deixe sua contribuição',
-          style: TextStyle(
-            fontFamily: 'Oswald',
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Deixe sua contribuição',
+              style: TextStyle(
+                fontFamily: 'Oswald',
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            Text(
+              _getContributionMessage(userCommentCount),
+              style: TextStyle(
+                fontFamily: 'Roboto',
+                fontSize: 14,
+                color: const Color.fromARGB(255, 255, 0, 0),
+              ),
+            ),
+          ],
         ),
         centerTitle: true,
       ),
@@ -109,11 +126,13 @@ class _CommentScreenState extends State<CommentScreen> {
 
                   final comments = snapshot.data!.docs;
 
-                  Map<String, List<QueryDocumentSnapshot>> commentsByParent = {};
+                  Map<String, List<QueryDocumentSnapshot>> commentsByParent =
+                      {};
                   for (var comment in comments) {
                     final commentData = comment.data() as Map<String, dynamic>?;
 
-                    String parentId = (commentData != null && commentData.containsKey('parentId'))
+                    String parentId = (commentData != null &&
+                            commentData.containsKey('parentId'))
                         ? commentData['parentId'] as String
                         : 'root';
 
@@ -139,7 +158,8 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  List<Widget> _buildCommentTree(String parentId, Map<String, List<QueryDocumentSnapshot>> commentsByParent) {
+  List<Widget> _buildCommentTree(String parentId,
+      Map<String, List<QueryDocumentSnapshot>> commentsByParent) {
     if (!commentsByParent.containsKey(parentId)) {
       return [];
     }
@@ -147,32 +167,47 @@ class _CommentScreenState extends State<CommentScreen> {
     return commentsByParent[parentId]!.map((commentData) {
       String commentId = commentData.id;
       final commentContent = commentData.data() as Map<String, dynamic>?;
+      
+      return FutureBuilder<String?>(
+  future: _getUserName(commentContent?['usuario'] ?? ''),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator(); // Mostra um indicador de carregamento
+    }
+    if (snapshot.hasError) {
+      return Text("Erro ao carregar nome");
+    }
 
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 5,
-            color: Colors.green,
-            margin: EdgeInsets.only(right: 8),
+    String userName = snapshot.data ?? 'Usuário Desconhecido';
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 5,
+          color: Colors.green,
+          margin: EdgeInsets.only(right: 8),
+        ),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildComment(
+                userName: userName,
+                comment: commentContent?['comentario'] ?? '',
+                onReply: () {
+                  _showReplyDialog(commentId);
+                },
+              ),
+              ..._buildCommentTree(commentId, commentsByParent),
+            ],
           ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildComment(
-                  userName: commentContent?['nomeUsuario'] ?? 'Anônimo',
-                  comment: commentContent?['comentario'] ?? '',
-                  onReply: () {
-                    _showReplyDialog(commentId);
-                  },
-                ),
-                ..._buildCommentTree(commentId, commentsByParent),
-              ],
-            ),
-          ),
-        ],
-      );
+        ),
+      ],
+    );
+  },
+);
+
     }).toList();
   }
 
@@ -221,27 +256,7 @@ class _CommentScreenState extends State<CommentScreen> {
           Padding(
             padding: const EdgeInsets.only(left: 48.0, top: 4),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        likedComments[comment] == true ? Icons.favorite : Icons.favorite_border,
-                        color: likedComments[comment] == true ? Colors.red : Colors.grey,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          likedComments[comment] = !(likedComments[comment] ?? false);
-                        });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.share, color: Colors.blue),
-                      onPressed: _showShareOptions,
-                    ),
-                  ],
-                ),
                 TextButton.icon(
                   onPressed: onReply,
                   icon: Icon(Icons.reply, color: Color(0xFFF65600)),
@@ -282,7 +297,8 @@ class _CommentScreenState extends State<CommentScreen> {
             ),
             TextButton(
               onPressed: () {
-                addCommentWithId('Você', replyController.text, parentId: parentId);
+                addCommentWithId(userId, replyController.text,
+                    parentId: parentId);
                 Navigator.pop(context);
               },
               child: Text('Enviar'),
@@ -292,6 +308,41 @@ class _CommentScreenState extends State<CommentScreen> {
       },
     );
   }
+
+  Future<void> addCommentWithId(String nomeUsuario, String comentario,
+    {String? parentId}) async {
+  try {
+    DocumentReference lastIdRef =
+        _firestore.collection('metadata').doc('lastCommentId');
+    DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
+
+    int newCommentId;
+    if (lastIdSnapshot.exists) {
+      newCommentId = lastIdSnapshot['value'] + 1;
+      await lastIdRef.update({'value': newCommentId});
+    } else {
+      newCommentId = 1;
+      await lastIdRef.set({'value': newCommentId});
+    }
+
+    String userId = UserSession().getLoggedInUser() ?? '';
+    await _firestore.collection('comentarios').doc(newCommentId.toString()).set({
+      'usuario': userId,
+      'comentario': comentario,
+      'parentId': parentId ?? 'root',
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    // Após adicionar o comentário, atualize o contador
+    await _fetchUserCommentCount();
+
+    // Atualize a tela
+    setState(() {});
+  } catch (e) {
+    print("Erro ao adicionar comentário: $e");
+  }
+}
+
 
   Widget _buildCommentInput() {
     return Row(
@@ -325,7 +376,10 @@ class _CommentScreenState extends State<CommentScreen> {
         IconButton(
           icon: Icon(Icons.send, color: Color(0xFF00796B)),
           onPressed: () {
-            addCommentWithId('Você', _commentController.text);
+            addCommentWithId(userId, _commentController.text);
+            _commentController.clear();
+            _fetchUserCommentCount();
+            setState(() {});
           },
         ),
       ],

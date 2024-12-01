@@ -11,7 +11,33 @@ import '../main.dart';
 
 class FirestoreService {
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+  Future<String> getNomeUsuarioLogado() async {
+  String userId = UserSession().getLoggedInUser() ?? '';
+  if (userId.isEmpty) {
+    print('Erro: Usuário não está logado.');
+    return "";
+  }
+  try {
+    // Obtém o documento diretamente pelo ID
+    DocumentSnapshot userDoc = await _firestore.collection('usuarios').doc(userId).get();
+    if (userDoc.exists) {
+      // Faz o cast do dado para Map<String, dynamic>
+      final userData = userDoc.data() as Map<String, dynamic>?;
+      if (userData != null && userData.containsKey('nome')) {
+        return userData['nome'];
+      } else {
+        print('Campo "nome" não encontrado no documento.');
+        return "";
+      }
+    } else {
+      print('Usuário não encontrado.');
+      return "";
+    }
+  } catch (e) {
+    print('Erro ao buscar usuário: $e');
+    return "";
+  }
+}
 Future<List<Map<String, dynamic>>> getPlantiosComPeriodo() async {
   try {
     String userName = UserSession().getLoggedInUser() ?? '';
