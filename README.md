@@ -19,7 +19,8 @@
 ### Professor responsável 👩🏻‍🏫
 
 **Cleia Marcia Gomes Amaral** 
-	 E-mail - cleia@pucminas.br
+
+E-mail - cleia@pucminas.br
 
 -----
 
