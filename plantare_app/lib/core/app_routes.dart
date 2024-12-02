@@ -8,12 +8,11 @@ import '../screens/planting_screen.dart';
 import '../screens/report_screen.dart';
 import '../screens/community_screen.dart';
 import '../screens/comment_screen.dart';
-<<<<<<< HEAD
-import '../screens/profile.dart';
-
-=======
-import '../screens/profile_screen.dart';  // Importando a tela de perfil
->>>>>>> 9fa6058 (Alterações na tela HomeScreen, novas rotas e adição da tela de perfil)
+import '../screens/settings_screen.dart';  // Tela de configurações
+import '../screens/edit_profile_screen.dart';  // Tela de edição de perfil
+import '../screens/view_profile_screen.dart'; // Tela de visualização do perfil
+import '../screens/security_settings_screen.dart'; // Tela de configurações de segurança
+import '../screens/terms_screen.dart'; // Importar a tela
 
 class AppRoutes {
   static const String onboarding = '/';
@@ -25,11 +24,11 @@ class AppRoutes {
   static const String report = '/report';
   static const String community = '/community';
   static const String comment = '/comment';
-<<<<<<< HEAD
-  static const String profile = '/profile';
-=======
-  static const String profile = '/profile';  // Adicionando a constante de rota para perfil
->>>>>>> 9fa6058 (Alterações na tela HomeScreen, novas rotas e adição da tela de perfil)
+  static const String settings = '/settings'; // Tela de configurações (antiga ProfileScreen)
+  static const String editProfile = '/edit-profile'; // Tela de edição de perfil
+  static const String viewProfile = '/view-profile'; // Tela de visualização de perfil
+  static const String securitySettings = '/security-settings'; // Tela de configurações de segurança
+  static const String terms = '/terms'; // Rota para termos de uso
 
   static final Map<String, WidgetBuilder> routes = {
     onboarding: (context) => OnboardingScreen(),
@@ -41,10 +40,10 @@ class AppRoutes {
     report: (context) => ReportScreen(),
     community: (context) => CommunityScreen(),
     comment: (context) => CommentScreen(),
-<<<<<<< HEAD
-    profile: (context) => ProfileScreen(),
-=======
-    profile: (context) => ProfileScreen(),  // Registrando a tela de perfil
->>>>>>> 9fa6058 (Alterações na tela HomeScreen, novas rotas e adição da tela de perfil)
+    settings: (context) => SettingsScreen(), // Tela de configurações
+    editProfile: (context) => EditProfileScreen(), // Tela de edição de perfil
+    viewProfile: (context) => ViewProfileScreen(), // Tela de visualização de perfil
+    securitySettings: (context) => SecuritySettingsScreen(), // Tela de configurações de segurança
+    terms: (context) => TermsScreen(), // Tela de Termos de Uso
   };
 }

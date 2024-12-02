@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import '../core/app_routes.dart'; // Certifique-se de importar o AppRoutes
 
-class ProfileScreen extends StatefulWidget {
+class EditProfileScreen extends StatefulWidget {
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _EditProfileScreenState createState() => _EditProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+
+  String? profileImage; // Caminho ou URL da imagem de perfil
+
+  Future<void> _pickImage() async {
+    // Lógica para selecionar uma imagem (você pode usar um pacote como image_picker)
+    setState(() {
+      profileImage = 'assets/images/sample_profile.png'; // Exemplo de imagem
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +35,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   end: Alignment.bottomCenter,
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset(
-                    'assets/images/onboarding_image.png',
+                    'assets/images/onboarding_image.png', // Substituir pelo caminho correto
                     height: 40,
                     width: 40,
                   ),
-                  Text(
+                  const Text(
                     "PLANTARE",
                     style: TextStyle(
                       fontFamily: 'Outfit',
@@ -44,12 +53,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Icon(Icons.search, color: Colors.white),
+                  const Icon(Icons.search, color: Colors.white),
                 ],
               ),
             ),
 
-            // Title and instructions
+            // Título e botão voltar
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Stack(
@@ -57,15 +66,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
+                      icon: const Icon(Icons.arrow_back, color: Colors.grey),
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context); // Voltar para a tela anterior
                       },
                     ),
                   ),
                   Align(
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       "EDITAR PERFIL",
                       style: TextStyle(
                         fontFamily: 'Outfit',
@@ -78,8 +87,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            
-            // Campos de texto (Nome, E-mail, Telefone)
+
+            // Foto de perfil
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: Column(
+                children: [
+                  GestureDetector(
+                    onTap: _pickImage, // Selecionar nova imagem
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.grey[300],
+                      backgroundImage: profileImage != null
+                          ? AssetImage(profileImage!) // Imagem selecionada
+                          : null,
+                      child: profileImage == null
+                          ? const Icon(
+                              Icons.camera_alt,
+                              size: 40,
+                              color: Colors.white,
+                            )
+                          : null,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Toque para alterar a foto",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ],
+              ),
+            ),
+
+            // Campos de edição
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -95,54 +135,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  // E-mail
+                  const SizedBox(height: 16),
+                  // Nome de usuário
                   TextField(
-                    controller: emailController,
+                    controller: usernameController,
                     decoration: InputDecoration(
-                      labelText: 'E-mail',
+                      labelText: 'Usuário',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  
-                  SizedBox(height: 24),
+                  const SizedBox(height: 24),
                   // Botões de salvar e cancelar
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          // Ação de cancelar
+                          // Cancelar e voltar para a tela anterior
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber, // Cor de fundo amarela
+                          backgroundColor: Colors.amber,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 32),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Cancelar',
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          // Ação de salvar
-                          // Adicione a lógica para salvar os dados aqui
+                          // Lógica para salvar os dados
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Perfil atualizado com sucesso!'),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF04BB86), // Cor de fundo verde
+                          backgroundColor: const Color(0xFF04BB86),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 14, horizontal: 32),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Salvar',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -155,64 +199,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: Container(
-          height: 60.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: Icon(Icons.home),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home'); // Direciona para Home
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.people),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/community'); // Direciona para Comunidade
-                },
-              ),
-              SizedBox(width: 40), // Espaço para o botão central
-              IconButton(
-                icon: Icon(Icons.analytics),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/report'); // Direciona para Métricas
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/profile'); // Direciona para Perfil
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Container(
-        height: 56.0,
-        width: 56.0,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            colors: [Color(0xFF04BB86), Color(0xFF225149)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/community'); // Direciona para a comunidade
-          },
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: Icon(Icons.add, color: Colors.white),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
