@@ -8,6 +8,7 @@ import '../screens/planting_screen.dart';
 import '../screens/report_screen.dart';
 import '../screens/community_screen.dart';
 import '../screens/comment_screen.dart';
+import '../screens/profile.dart';
 
 
 class AppRoutes {
@@ -20,6 +21,7 @@ class AppRoutes {
   static const String report = '/report';
   static const String community = '/community';
   static const String comment = '/comment';
+  static const String profile = '/profile';
 
   static final Map<String, WidgetBuilder> routes = {
     onboarding: (context) => OnboardingScreen(),
@@ -31,5 +33,6 @@ class AppRoutes {
     report: (context) => ReportScreen(),
     community: (context) => CommunityScreen(),
     comment: (context) => CommentScreen(),
+    profile: (context) => ProfileScreen(),
   };
 }
