@@ -29,7 +29,7 @@ E-mail - cleia@pucminas.br
 - Linguagem: Dart 
 - Framework: Flutter 
 - Banco de dados: Google Firebase 
-- Modelagem das métricas: Google Analytics 
+- Modelagem das métricas: Google Looker studo 
 - Prototipação: Figma
 
 #### Protótipo 
