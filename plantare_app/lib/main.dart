@@ -43,33 +43,42 @@ class UserSession {
   String? getLoggedInUserMail() {
     return loggedInUserMail;
   }
+
+  // Método para limpar a sessão do usuário
+  void clearSession() {
+    loggedInUser = null;
+    loggedInUserName = null;
+    loggedInUserMail = null;
+    print("Sessão do usuário limpa com sucesso.");
+  }
 }
+
 void loginUser(String userId, String userName, String userMail) {
   UserSession().setLoggedInUser(userId);
   UserSession().setLoggedInUserName(userName);
   UserSession().setLoggedInUserMail(userMail);
-  print("Usuário logado: ${UserSession().getLoggedInUser()} Nome: ${UserSession().getLoggedInUserName()} Email: ${UserSession().getLoggedInUserMail()}");
+  print(
+      "Usuário logado: ${UserSession().getLoggedInUser()} Nome: ${UserSession().getLoggedInUserName()} Email: ${UserSession().getLoggedInUserMail()}");
 }
 
 void main() async {
-   WidgetsFlutterBinding.ensureInitialized();
-   try{
+  WidgetsFlutterBinding.ensureInitialized();
+  try {
     await Firebase.initializeApp(
-    options: const FirebaseOptions(
-      apiKey: "AIzaSyDaoAbYq7CmXjEI5TZRPI2_jz0w2-jGBi8",
-      authDomain: "plantare-app.firebaseapp.com",
-      projectId: "plantare-app",
-      storageBucket: "plantare-app.firebasestorage.app",
-      messagingSenderId: "468361004286",
-      appId: "1:468361004286:web:9806e72a37ed4bceb0d1af",
-    ),
-  );
-  print("Firebase inicializado com sucesso");
-   }
-   catch (e) {
+      options: const FirebaseOptions(
+        apiKey: "AIzaSyDaoAbYq7CmXjEI5TZRPI2_jz0w2-jGBi8",
+        authDomain: "plantare-app.firebaseapp.com",
+        projectId: "plantare-app",
+        storageBucket: "plantare-app.firebasestorage.app",
+        messagingSenderId: "468361004286",
+        appId: "1:468361004286:web:9806e72a37ed4bceb0d1af",
+      ),
+    );
+    print("Firebase inicializado com sucesso");
+  } catch (e) {
     print("Erro ao inicializar Firebase: $e");
   }
-  
+
   runApp(MyApp());
 }
 

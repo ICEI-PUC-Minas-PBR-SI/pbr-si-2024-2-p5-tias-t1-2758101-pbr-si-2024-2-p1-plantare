@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart'; // Certifique-se de que o pacote está configurado corretamente
 import '../core/app_routes.dart';
-import '../main.dart'; // Certifique-se de que AppRoutes está importado corretamente
+import '../main.dart'; // Certifique-se de que o UserSession está corretamente configurado
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -29,8 +29,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
     }
   }
-  String userName = UserSession().getLoggedInUserName() ?? '';
-  String userMail = UserSession().getLoggedInUserMail() ?? '';
+
+  // Função para logout
+  void _logout() {
+    // Limpa a sessão do usuário
+    UserSession().clearSession(); // Método para limpar a sessão do usuário
+    // Redireciona para a tela de login
+    Navigator.pushReplacementNamed(context, AppRoutes.login);
+  }
+
+  // Obtendo informações do usuário logado
+  String userName = UserSession().getLoggedInUserName() ?? 'Usuário';
+  String userMail = UserSession().getLoggedInUserMail() ?? 'email@exemplo.com';
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     children: [
                       Text(
                         userName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
@@ -130,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                       Text(
                         userMail,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: Colors.grey,
                         ),
@@ -205,6 +215,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Icons.exit_to_app,
               20,
               isLogout: true,
+              onTap: _logout, // Chama a função de logout
             ),
           ],
         ),
