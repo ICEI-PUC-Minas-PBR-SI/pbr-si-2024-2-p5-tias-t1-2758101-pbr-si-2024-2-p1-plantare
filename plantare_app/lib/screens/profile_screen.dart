@@ -107,16 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  // Telefone
-                  TextField(
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      labelText: 'Telefone',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
+                  
                   SizedBox(height: 24),
                   // Botões de salvar e cancelar
                   Row(
