@@ -23,6 +23,26 @@ class UserSession {
   String? getLoggedInUser() {
     return loggedInUser;
   }
+
+  String? loggedInUserName;
+
+  void setLoggedInUserName(String userName) {
+    loggedInUserName = userName;
+  }
+
+  String? getLoggedInUserName() {
+    return loggedInUserName;
+  }
+
+  String? loggedInUserMail;
+
+  void setLoggedInUserMail(String userMail) {
+    loggedInUserMail = userMail;
+  }
+
+  String? getLoggedInUserMail() {
+    return loggedInUserMail;
+  }
 }
 void loginUser(String userId) {
   UserSession().setLoggedInUser(userId);
