@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart'; // Certifique-se de que o pacote está configurado corretamente
-import '../core/app_routes.dart'; // Certifique-se de que AppRoutes está importado corretamente
+import '../core/app_routes.dart';
+import '../main.dart'; // Certifique-se de que AppRoutes está importado corretamente
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -28,6 +29,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       );
     }
   }
+  String userName = UserSession().getLoggedInUserName() ?? '';
+  String userMail = UserSession().getLoggedInUserMail() ?? '';
 
   @override
   Widget build(BuildContext context) {
@@ -116,9 +119,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   const SizedBox(width: 16),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Abner Amorim',
+                        userName,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -126,7 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ),
                       Text(
-                        'abner@gmail.com',
+                        userMail,
                         style: TextStyle(
                           fontSize: 14,
                           color: Colors.grey,

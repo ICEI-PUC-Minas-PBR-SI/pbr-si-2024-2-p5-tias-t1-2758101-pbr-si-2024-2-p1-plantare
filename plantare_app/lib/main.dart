@@ -44,9 +44,11 @@ class UserSession {
     return loggedInUserMail;
   }
 }
-void loginUser(String userId) {
+void loginUser(String userId, String userName, String userMail) {
   UserSession().setLoggedInUser(userId);
-  print("Usuário logado: ${UserSession().getLoggedInUser()}");
+  UserSession().setLoggedInUserName(userName);
+  UserSession().setLoggedInUserMail(userMail);
+  print("Usuário logado: ${UserSession().getLoggedInUser()} Nome: ${UserSession().getLoggedInUserName()} Email: ${UserSession().getLoggedInUserMail()}");
 }
 
 void main() async {

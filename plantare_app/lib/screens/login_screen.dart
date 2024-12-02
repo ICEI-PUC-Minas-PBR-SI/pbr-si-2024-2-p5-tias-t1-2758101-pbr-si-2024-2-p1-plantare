@@ -9,6 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isHovering = false; 
@@ -30,8 +31,18 @@ class _LoginScreenState extends State<LoginScreen> {
       if (querySnapshot.docs.isNotEmpty) {
         // Login bem-sucedido
         DocumentSnapshot doc = querySnapshot.docs.first;
+        DocumentSnapshot userDoc = await _firestore.collection('usuarios').doc(doc.id).get();
+        String userName = '';
+        String userMail = '';
         Navigator.pushReplacementNamed(context, '/home'); // Navega para a tela principal
-        loginUser(doc.id);
+        if (userDoc.exists) {
+          final userData = userDoc.data() as Map<String, dynamic>?;
+          if (userData != null && userData.containsKey('Nome') && userData.containsKey('Email')) {
+            userName = userData['Nome'];
+            userMail = userData['Email'];
+          } 
+        }
+        loginUser(doc.id, userName, userMail);
       } else {
         // Exibe popup de erro
         _showErrorDialog("E-mail ou senha incorretos.");
