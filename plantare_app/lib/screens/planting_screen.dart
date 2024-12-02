@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plantare_app/database/database_helper.dart';
 import 'package:intl/intl.dart';
+import '../main.dart';
 
 class PlantingScreen extends StatefulWidget {
   @override
@@ -72,6 +73,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
     required String dataColheita,
     required String tipoSolo,
     required String clima,
+    required String usuario,
     String? observacao,
   }) async {
     try {
@@ -98,6 +100,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
         'TipoSolo': tipoSolo,
         'Clima': clima,
         'Observacao': observacao ?? '',
+        'Usuario': usuario,
         'Timestamp': FieldValue.serverTimestamp(),
       });
 
@@ -362,6 +365,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                         ),
                         child: ElevatedButton(
                           onPressed: () async {
+
                             if (selectedVerdura != null &&
                                 dateController.text.isNotEmpty &&
                                 selectedSoilType != null &&
@@ -372,6 +376,7 @@ class _PlantingScreenState extends State<PlantingScreen> {
                                 dataColheita: dateColheitaController.text,
                                 tipoSolo: selectedSoilType!,
                                 clima: selectedClimate!,
+                                usuario: UserSession().getLoggedInUser() ?? '',
                                 observacao: observationController.text,
                               );
                               Navigator.pushNamed(context, '/report');
