@@ -453,7 +453,7 @@ bottomNavigationBar: BottomAppBar(
         IconButton(
           icon: Icon(Icons.person),
           onPressed: () {
-            Navigator.pushNamed(context, '/profile'); // Direciona para Perfil
+            Navigator.pushNamed(context, '/settings'); // Direciona para Perfil
           },
         ),
       ],

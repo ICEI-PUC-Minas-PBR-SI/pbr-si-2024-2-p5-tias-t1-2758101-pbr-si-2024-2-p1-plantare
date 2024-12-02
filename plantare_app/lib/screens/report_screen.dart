@@ -158,7 +158,7 @@ class _ReportScreenState extends State<ReportScreen> {
               IconButton(
                 icon: Icon(Icons.person, color: Color(0xFF000000)),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/profile'); // Navegar para Perfil
+                  Navigator.pushNamed(context, '/settings'); // Navegar para Perfil
                 },
               ),
             ],

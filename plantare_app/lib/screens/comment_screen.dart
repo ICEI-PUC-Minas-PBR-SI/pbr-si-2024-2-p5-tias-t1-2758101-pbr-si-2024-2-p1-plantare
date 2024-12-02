@@ -146,7 +146,7 @@ class _CommentScreenState extends State<CommentScreen> {
               IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/profile'); // Navegar para Perfil
+                  Navigator.pushNamed(context, '/settings'); // Navegar para Perfil
                 },
               ),
             ],
