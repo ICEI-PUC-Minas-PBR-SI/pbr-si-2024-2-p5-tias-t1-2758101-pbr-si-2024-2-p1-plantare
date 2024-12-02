@@ -17,94 +17,35 @@ class _CommentScreenState extends State<CommentScreen> {
   final TextEditingController _commentController = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final FirestoreService firestoreService = FirestoreService();
-
-  int userCommentCount = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchUserCommentCount();
-  }
-
-  Future<void> _fetchUserCommentCount() async {
-    try {
-      QuerySnapshot userComments = await _firestore
-          .collection('comentarios')
-          .where('usuario', isEqualTo: userId)
-          .get();
-
-      setState(() {
-        userCommentCount = userComments.size;
-      });
-    } catch (e) {
-      print("Erro ao buscar contagem de comentários: $e");
-    }
-  }
-
-  Future<String?> _getUserName(String userId) async {
-    if (userId.isEmpty) {
-      return 'Usuário Desconhecido';
-    }
-    try {
-      DocumentSnapshot userDoc =
-          await _firestore.collection('usuarios').doc(userId).get();
-      if (userDoc.exists) {
-        final userData = userDoc.data() as Map<String, dynamic>?;
-        return userData?['Nome'] ?? 'Usuário Desconhecido';
-      }
-      return 'Usuário Desconhecido';
-    } catch (e) {
-      print('Erro ao buscar nome do usuário: $e');
-      return 'Usuário Desconhecido';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String _getContributionMessage(int count) {
-    if (count >= 20) {
-      return count.toString() + " comentários. Contribuidor Estrela! 🌟";
-    } else if (count >= 10) {
-      return count.toString() + " comentários. Contribuidor Proativo! 🚀";
-    } else if (count >= 5) {
-      return count.toString() + " comentários. Contribuidor Regular! 🧐";
-    } else {
-      return count.toString() + " comentários. Começando a Contribuir! 😄";
-    }
-  }
     return Scaffold(
-      backgroundColor: Color(0xFFD9D9D9),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Color(0xFF04BB86),
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/images/onboarding_image.png',
+              height: 40,
+              width: 40,
+            ),
+            SizedBox(width: 8),
             Text(
-              'Deixe sua contribuição',
+              "PLANTARE",
               style: TextStyle(
-                fontFamily: 'Oswald',
-                fontSize: 24,
+                fontFamily: 'Outfit',
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
-            Text(
-              _getContributionMessage(userCommentCount),
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 14,
-                color: const Color.fromARGB(255, 255, 0, 0),
-              ),
-            ),
+            Spacer(),
+            Icon(Icons.search, color: Colors.white),
           ],
         ),
-        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -143,7 +84,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   }
 
                   return ListView(
-                    children: _buildCommentTree('root', commentsByParent),
+                    children: _buildCommentTree('root', commentsByParent, 0),
                   );
                 },
               ),
@@ -154,12 +95,69 @@ class _CommentScreenState extends State<CommentScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNavigationBar(context),
+      floatingActionButton: Container(
+        height: 56.0,
+        width: 56.0,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: LinearGradient(
+            colors: [Color(0xFF04BB86), Color(0xFF225149)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/planting'); // Navegar para Plantio
+          },
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Icon(Icons.add, color: Colors.white),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Container(
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(Icons.home),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home'); // Navegar para Home
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.people),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/community'); // Navegar para Comunidade
+                },
+              ),
+              SizedBox(width: 40), // Espaço para o botão central
+              IconButton(
+                icon: Icon(Icons.analytics),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/report'); // Navegar para Métricas
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile'); // Navegar para Perfil
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   List<Widget> _buildCommentTree(String parentId,
-      Map<String, List<QueryDocumentSnapshot>> commentsByParent) {
+      Map<String, List<QueryDocumentSnapshot>> commentsByParent, int depth) {
     if (!commentsByParent.containsKey(parentId)) {
       return [];
     }
@@ -167,113 +165,159 @@ class _CommentScreenState extends State<CommentScreen> {
     return commentsByParent[parentId]!.map((commentData) {
       String commentId = commentData.id;
       final commentContent = commentData.data() as Map<String, dynamic>?;
-      
+
       return FutureBuilder<String?>(
-  future: _getUserName(commentContent?['usuario'] ?? ''),
-  builder: (context, snapshot) {
-    if (snapshot.connectionState == ConnectionState.waiting) {
-      return CircularProgressIndicator(); // Mostra um indicador de carregamento
-    }
-    if (snapshot.hasError) {
-      return Text("Erro ao carregar nome");
-    }
+        future: _getUserName(commentContent?['usuario'] ?? ''),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Text("Erro ao carregar nome");
+          }
 
-    String userName = snapshot.data ?? 'Usuário Desconhecido';
+          String userName = snapshot.data ?? '';
+          String timestamp = commentContent?['timestamp'] != null
+              ? (commentContent?['timestamp'] as Timestamp).toDate().toString()
+              : '00:00 AM - 00/00/0000';
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 5,
-          color: Colors.green,
-          margin: EdgeInsets.only(right: 8),
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildComment(
-                userName: userName,
-                comment: commentContent?['comentario'] ?? '',
-                onReply: () {
-                  _showReplyDialog(commentId);
-                },
-              ),
-              ..._buildCommentTree(commentId, commentsByParent),
-            ],
-          ),
-        ),
-      ],
-    );
-  },
-);
-
+          return Padding(
+            padding: EdgeInsets.only(left: depth * 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildComment(
+                  userName: userName,
+                  comment: commentContent?['comentario'] ?? '',
+                  timestamp: timestamp,
+                  onReply: () {
+                    _showReplyDialog(commentId);
+                  },
+                ),
+                ..._buildCommentTree(commentId, commentsByParent, depth + 1),
+              ],
+            ),
+          );
+        },
+      );
     }).toList();
   }
 
   Widget _buildComment({
     required String userName,
     required String comment,
+    required String timestamp,
     required VoidCallback onReply,
   }) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    bool isLiked = false;
+    bool isHot = false;
+
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.yellow[700],
-                child: Icon(Icons.person, color: Colors.white),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.yellow[700],
+                    child: Icon(Icons.person, color: Colors.white),
+                  ),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      userName,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 8),
-              Expanded(
+              SizedBox(height: 4),
+              Padding(
+                padding: const EdgeInsets.only(left: 48.0),
                 child: Text(
-                  userName,
+                  comment,
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Colors.black87,
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 48.0, top: 4),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      timestamp,
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.favorite,
+                            color: isLiked ? Colors.red : Colors.grey,
+                            size: 16,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isLiked = !isLiked;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.whatshot,
+                            color: isHot ? Colors.amber : Colors.grey,
+                            size: 16,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isHot = !isHot;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 48.0, top: 4),
+                child: Row(
+                  children: [
+                    TextButton.icon(
+                      onPressed: onReply,
+                      icon: Icon(Icons.reply, color: Color(0xFFF65600)),
+                      label: Text(
+                        'Responder',
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 12,
+                          color: Color(0xFFF65600),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
-          SizedBox(height: 4),
-          Padding(
-            padding: const EdgeInsets.only(left: 48.0),
-            child: Text(
-              comment,
-              style: TextStyle(
-                fontFamily: 'Roboto',
-                fontSize: 14,
-                color: Colors.black87,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 48.0, top: 4),
-            child: Row(
-              children: [
-                TextButton.icon(
-                  onPressed: onReply,
-                  icon: Icon(Icons.reply, color: Color(0xFFF65600)),
-                  label: Text(
-                    'Responder',
-                    style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 12,
-                      color: Color(0xFFF65600),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -309,40 +353,34 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  Future<void> addCommentWithId(String nomeUsuario, String comentario,
-    {String? parentId}) async {
-  try {
-    DocumentReference lastIdRef =
-        _firestore.collection('metadata').doc('lastCommentId');
-    DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
+  Future<void> addCommentWithId(String userId, String comment,
+      {String? parentId}) async {
+    try {
+      DocumentReference lastIdRef =
+          _firestore.collection('metadata').doc('lastCommentId');
+      DocumentSnapshot lastIdSnapshot = await lastIdRef.get();
 
-    int newCommentId;
-    if (lastIdSnapshot.exists) {
-      newCommentId = lastIdSnapshot['value'] + 1;
-      await lastIdRef.update({'value': newCommentId});
-    } else {
-      newCommentId = 1;
-      await lastIdRef.set({'value': newCommentId});
+      int newCommentId;
+      if (lastIdSnapshot.exists) {
+        newCommentId = lastIdSnapshot['value'] + 1;
+        await lastIdRef.update({'value': newCommentId});
+      } else {
+        newCommentId = 1;
+        await lastIdRef.set({'value': newCommentId});
+      }
+
+      await _firestore.collection('comentarios').doc(newCommentId.toString()).set({
+        'usuario': userId,
+        'comentario': comment,
+        'parentId': parentId ?? 'root',
+        'timestamp': FieldValue.serverTimestamp(),
+      });
+
+      setState(() {});
+    } catch (e) {
+      print("Erro ao adicionar comentário: $e");
     }
-
-    String userId = UserSession().getLoggedInUser() ?? '';
-    await _firestore.collection('comentarios').doc(newCommentId.toString()).set({
-      'usuario': userId,
-      'comentario': comentario,
-      'parentId': parentId ?? 'root',
-      'timestamp': FieldValue.serverTimestamp(),
-    });
-
-    // Após adicionar o comentário, atualize o contador
-    await _fetchUserCommentCount();
-
-    // Atualize a tela
-    setState(() {});
-  } catch (e) {
-    print("Erro ao adicionar comentário: $e");
   }
-}
-
 
   Widget _buildCommentInput() {
     return Row(
@@ -378,7 +416,6 @@ class _CommentScreenState extends State<CommentScreen> {
           onPressed: () {
             addCommentWithId(userId, _commentController.text);
             _commentController.clear();
-            _fetchUserCommentCount();
             setState(() {});
           },
         ),
@@ -386,47 +423,18 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 
-  Widget _buildBottomNavigationBar(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFF0F6D5F),
-            width: 4,
-          ),
-        ),
-      ),
-      child: BottomNavigationBar(
-        backgroundColor: Color(0xFFECECEC),
-        selectedItemColor: Color(0xFF225149),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, size: 24),
-            label: 'Início',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.analytics, size: 24),
-            label: 'Métricas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person, size: 24),
-            label: 'Perfil',
-          ),
-        ],
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushNamed(context, '/home');
-          } else if (index == 1) {
-            Navigator.pushNamed(context, '/report');
-          } else if (index == 2) {
-            Navigator.pushNamed(context, '/profile');
-          }
-        },
-      ),
-    );
+  Future<String?> _getUserName(String userId) async {
+    try {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('usuarios').doc(userId).get();
+      if (userDoc.exists) {
+        final userData = userDoc.data() as Map<String, dynamic>?;
+        return userData?['Nome'];
+      }
+      return null;
+    } catch (e) {
+      print('Erro ao buscar nome do usuário: $e');
+      return null;
+    }
   }
 }

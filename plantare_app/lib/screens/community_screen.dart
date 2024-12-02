@@ -1,6 +1,39 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
+import 'tipdetail_screen.dart';
 
-class CommunityScreen extends StatelessWidget {
+class CommunityScreen extends StatefulWidget {
+  @override
+  _CommunityScreenState createState() => _CommunityScreenState();
+}
+
+class _CommunityScreenState extends State<CommunityScreen> {
+  List<Article> articles = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadArticles();
+  }
+
+  // Carregar artigos do arquivo JSON
+  Future<void> _loadArticles() async {
+    try {
+      final String response = await rootBundle.loadString('assets/artigos.json');
+      final List<dynamic> data = json.decode(response);
+
+      // Verifique se os dados foram carregados corretamente
+      print("Artigos carregados: $data");
+
+      setState(() {
+        articles = data.map((article) => Article.fromJson(article)).toList();
+      });
+    } catch (e) {
+      print("Erro ao carregar os artigos: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,7 +41,7 @@ class CommunityScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header
+            // Header (adaptado para CommunityScreen)
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -22,7 +55,7 @@ class CommunityScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Image.asset(
-                    'assets/images/onboarding_image.png',
+                    'assets/images/onboarding_image.png',  // Logo da Plantare
                     height: 40,
                     width: 40,
                   ),
@@ -35,7 +68,7 @@ class CommunityScreen extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  Icon(Icons.search, color: Colors.white),
+                  Icon(Icons.search, color: Colors.white),  // Ícone de busca
                 ],
               ),
             ),
@@ -48,16 +81,16 @@ class CommunityScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: IconButton(
-                      icon: Icon(Icons.arrow_back, color: Colors.grey),
+                      icon: Icon(Icons.arrow_back, color: Colors.grey),  // Ícone de voltar
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context);  // Volta para a tela anterior
                       },
                     ),
                   ),
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "DICAS",
+                      "DICAS",  // Título da tela para CommunityScreen
                       style: TextStyle(
                         fontFamily: 'Outfit',
                         fontSize: 20,
@@ -69,51 +102,65 @@ class CommunityScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Community Posts Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildCommunityPost(
-                    title: '10 dicas para quem está começando a cultivar plantas ou alimentos',
-                    content: 'Começar um jardim ou uma horta pode parecer um desafio...',
-                    author: 'João',
-                    likes: 12,
-                    comments: 5,
-                    onShare: () {
-                      // Share action
+            
+            // Lista de artigos (continuando com a mesma estrutura)
+            articles.isEmpty
+                ? Center(child: CircularProgressIndicator()) // Exibe carregando
+                : ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      final article = articles[index];
+                      return _buildCommunityPost(
+                        context: context,
+                        title: article.title,
+                        content: article.content.substring(0, 100) + "...", // Exibir uma prévia maior do conteúdo
+                        author: 'Autor Desconhecido',
+                        fullContent: article.content,
+                      );
                     },
                   ),
-                  _buildCommunityPost(
-                    title: 'Do Solo à Colheita: Técnicas Essenciais de Cultivo',
-                    content: 'O cultivo é uma jornada que começa com a preparação do solo...',
-                    author: 'Maria',
-                    likes: 8,
-                    comments: 2,
-                    onShare: () {
-                      // Share action
-                    },
-                  ),
-                  _buildCommunityPost(
-                    title: 'Hidroponia para Todos: Um Guia Prático',
-                    content: 'A hidroponia, uma técnica de cultivo sem solo...',
-                    author: 'Luciano',
-                    likes: 20,
-                    comments: 7,
-                    onShare: () {
-                      // Share action
-                    },
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),
-
-      // Floating Action Button with Gradient
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 8.0,
+        child: Container(
+          height: 60.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                icon: Icon(Icons.home),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/home'); // Navegar para Home
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.people),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/community'); // Navegar para Comunidade
+                },
+              ),
+              SizedBox(width: 40), // Espaço para o botão central
+              IconButton(
+                icon: Icon(Icons.analytics),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/report'); // Navegar para Relatórios
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.person),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/profile'); // Navegar para Perfil
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       floatingActionButton: Container(
         height: 56.0,
         width: 56.0,
@@ -127,73 +174,53 @@ class CommunityScreen extends StatelessWidget {
         ),
         child: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/planting');
+            Navigator.pushNamed(context, '/planting'); // Navegar para Plantio
           },
-          backgroundColor: Colors.transparent, // Torna o fundo do botão invisível
+          backgroundColor: Colors.transparent,
           elevation: 0,
           child: Icon(Icons.add, color: Colors.white),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 8.0,
-        child: Container(
-          height: 60.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: Icon(Icons.home),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/home');
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.people),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/community');
-                },
-              ),
-              SizedBox(width: 40), // Espaço para o botão central
-              IconButton(
-                icon: Icon(Icons.analytics),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/report');
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.person),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/profile');
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
-  // Method for building community post cards
+  // Método para construir o post de cada artigo
   Widget _buildCommunityPost({
+    required BuildContext context,
     required String title,
     required String content,
     required String author,
-    required int likes,
-    required int comments,
-    required VoidCallback onShare,
+    required String fullContent,
   }) {
-    return Card(
-      color: Color(0xFFBFBFBF),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TipDetailScreen(
+              title: title,
+              content: fullContent,
+              author: author,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),  // Espaçamento entre os artigos
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Color(0xFFF5F5F5),
+          borderRadius: BorderRadius.circular(16),  // Borda arredondada
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: Offset(0, 3), // Sombra suave
+            ),
+          ],
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -201,54 +228,49 @@ class CommunityScreen extends StatelessWidget {
               title,
               style: TextStyle(
                 fontFamily: 'Oswald',
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              'Por: $author',
-              style: TextStyle(
-                fontFamily: 'Manrope',
-                fontSize: 14,
                 color: Colors.black,
               ),
             ),
             SizedBox(height: 8),
             Text(
+              'Por: $author',
+              style: TextStyle(
+                fontFamily: 'Manrope',
+                fontSize: 14,
+                color: Colors.grey[600],
+              ),
+            ),
+            SizedBox(height: 12),
+            Text(
               content,
               style: TextStyle(
                 fontFamily: 'Oswald',
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontSize: 16,
+                color: Colors.black87,
               ),
-            ),
-            SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.favorite, color: Colors.red, size: 20),
-                    SizedBox(width: 4),
-                    Text('$likes', style: TextStyle(color: Colors.black)),
-                    SizedBox(width: 16),
-                    Icon(Icons.comment, color: Colors.black, size: 20),
-                    SizedBox(width: 4),
-                    Text('$comments', style: TextStyle(color: Colors.black)),
-                  ],
-                ),
-                IconButton(
-                  icon: Icon(Icons.share, color: Colors.black),
-                  onPressed: onShare,
-                ),
-              ],
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,  // Trunca o texto se necessário
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+// Classe Article para armazenar dados dos artigos
+class Article {
+  final String title;
+  final String content;
+
+  Article({required this.title, required this.content});
+
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
+      title: json['title'],
+      content: json['content'],
     );
   }
 }
