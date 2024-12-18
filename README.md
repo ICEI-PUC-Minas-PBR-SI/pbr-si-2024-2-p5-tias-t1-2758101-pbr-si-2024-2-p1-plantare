@@ -34,7 +34,7 @@ E-mail - cleia@pucminas.br
 
 ⚠️ Observações: Acesso para visualizar banco de dados enviado por e-mail da professora.
 
-Para visualizar o relatório de métricas acesse: https://lookerstudio.google.com/reporting/a585803b-aa1e-4983-9903-e864919685db
+[Para visualizar o relatório de métricas acesse aqui](https://lookerstudio.google.com/reporting/a585803b-aa1e-4983-9903-e864919685db)
 
 
 
