@@ -29,8 +29,14 @@ E-mail - cleia@pucminas.br
 - Linguagem: Dart 
 - Framework: Flutter 
 - Banco de dados: Google Firebase 
-- Modelagem das métricas: Google Looker Studio 
+- Modelagem das métricas: Google Looker Studio
 - Prototipação: Figma
+
+⚠️ Observações: Acesso para visualizar banco de dados enviado por e-mail da professora.
+
+Para visualizar o relatório de métricas acesse: https://lookerstudio.google.com/reporting/a585803b-aa1e-4983-9903-e864919685db
+
+
 
 #### Protótipo 
 
